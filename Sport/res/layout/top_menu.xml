@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+     >
+    <LinearLayout 
+     	android:layout_height="45dp"
+     	android:layout_width="match_parent"
+     	android:orientation="horizontal"
+     	android:background="@color/title"
+    	>
+    <TextView
+        android:layout_width="0dp"
+        android:layout_height="match_parent"
+        android:layout_gravity="center"
+        android:layout_weight="1"
+        android:text="比赛"
+        android:textColor="@color/white"
+        android:textSize="16sp"
+        android:gravity="center"
+        />
+<ImageView
+    android:id="@+id/iv_search"
+    android:layout_width="wrap_content"
+    android:layout_height="match_parent"
+    android:layout_gravity="center"
+    android:src="@drawable/search" 
+    android:layout_marginRight="10dp"
+    />
+</LinearLayout>
+</RelativeLayout>
