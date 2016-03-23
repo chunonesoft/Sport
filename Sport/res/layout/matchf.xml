@@ -28,8 +28,8 @@
             android:layout_height="match_parent"
             android:orientation="vertical" 
             >
-       			<com.chunsoft.ab.view.AbSlidingPlayView
-                android:id="@+id/viewPager_menu"
+       			<com.chunsoft.view.ImageCycleView
+                android:id="@+id/ad_view"
                 android:layout_width="match_parent"
                 android:layout_height="160dp"
                  />

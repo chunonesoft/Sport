@@ -664,12 +664,19 @@ or to a theme attribute in the form "<code>?[<i>package</i>:][<i>type</i>:]<i>na
         public static final int guide_tfaccount_nm=0x7f020009;
         public static final int guide_tfaccount_on=0x7f02000a;
         public static final int ic_launcher=0x7f02000b;
-        public static final int indicator_arrow=0x7f02000c;
-        public static final int indicator_bg_bottom=0x7f02000d;
-        public static final int indicator_bg_top=0x7f02000e;
-        public static final int search=0x7f02000f;
+        public static final int icon_empty=0x7f02000c;
+        public static final int icon_error=0x7f02000d;
+        public static final int icon_point=0x7f02000e;
+        public static final int icon_point_pre=0x7f02000f;
+        public static final int icon_stub=0x7f020010;
+        public static final int indicator_arrow=0x7f020011;
+        public static final int indicator_bg_bottom=0x7f020012;
+        public static final int indicator_bg_top=0x7f020013;
+        public static final int search=0x7f020014;
     }
     public static final class id {
+        public static final int ad_rl=0x7f06001d;
+        public static final int ad_view=0x7f060015;
         public static final int both=0x7f060003;
         public static final int disabled=0x7f060004;
         public static final int fl_inner=0x7f060017;
@@ -685,6 +692,7 @@ or to a theme attribute in the form "<code>?[<i>package</i>:][<i>type</i>:]<i>na
         public static final int menu_bottom=0x7f06000e;
         public static final int menu_line=0x7f06000d;
         public static final int myGridView=0x7f060016;
+        public static final int pager_banner=0x7f06001e;
         public static final int pullDownFromTop=0x7f060006;
         public static final int pullFromEnd=0x7f060007;
         public static final int pullFromStart=0x7f060008;
@@ -697,7 +705,7 @@ or to a theme attribute in the form "<code>?[<i>package</i>:][<i>type</i>:]<i>na
         public static final int rotate=0x7f06000b;
         public static final int scrollview=0x7f060002;
         public static final int show_layout=0x7f06000c;
-        public static final int viewPager_menu=0x7f060015;
+        public static final int viewGroup=0x7f06001f;
         public static final int webview=0x7f060001;
     }
     public static final class layout {
@@ -706,6 +714,7 @@ or to a theme attribute in the form "<code>?[<i>package</i>:][<i>type</i>:]<i>na
         public static final int pull_to_refresh_header_horizontal=0x7f030002;
         public static final int pull_to_refresh_header_vertical=0x7f030003;
         public static final int top_menu=0x7f030004;
+        public static final int view_banner_content=0x7f030005;
     }
     public static final class string {
         public static final int app_name=0x7f070006;
