@@ -348,5 +348,7 @@
     <!-- 主要颜色 -->
 	<color name="title">#d3052b</color>
     
+	<!-- 首界面 -->
+	<color name="top_line">#dfdfdf</color>
 
 </resources>

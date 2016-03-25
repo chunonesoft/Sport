@@ -33,15 +33,60 @@
                 android:layout_width="match_parent"
                 android:layout_height="160dp"
                  />
-				<com.chunsoft.view.MyListView
-                android:id="@+id/myGridView"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:horizontalSpacing="3dp"
-                android:verticalSpacing="3dp"
-                android:numColumns="2"
-                android:background="#eeeeee"
-                ></com.chunsoft.view.MyListView>
+       			<View
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:background="@color/top_line" />
+       	<LinearLayout 
+			android:layout_width="match_parent"
+			android:layout_height="45dp"
+			android:background="@color/white"
+			android:orientation="horizontal"
+        >
+        <TextView
+            android:layout_marginLeft="20dp"
+            android:layout_weight="1"
+            android:layout_width="0dp"
+            android:gravity="center"
+            android:layout_height="match_parent"
+            android:drawableLeft="@drawable/title_logo1"
+            android:text="赛果" 
+            />
+        <View
+        android:layout_width="1dp"
+        android:layout_height="match_parent"
+        android:background="@color/top_line" />
+        <TextView
+            android:layout_marginLeft="20dp"
+            android:layout_weight="1"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:gravity="center"
+            android:drawableLeft="@drawable/title_logo2"
+            android:text="赛程" />
+    </LinearLayout>
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:background="@color/top_line" />
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="26dp"
+        android:gravity="center_vertical"
+        android:text="热门比赛"
+        android:textColor="#767b7e"
+        android:background="#f3f3f3"
+        android:paddingLeft="10dp"
+        />
+		<com.chunsoft.view.MyListView
+	             android:id="@+id/myLv"
+	             android:layout_width="match_parent"
+	             android:layout_height="wrap_content"
+	             android:horizontalSpacing="3dp"
+	             android:verticalSpacing="3dp"
+	             android:dividerHeight="3dp"
+	             android:background="#eeeeee"
+	             ></com.chunsoft.view.MyListView>
 		</LinearLayout>
 </com.handmark.pulltorefresh.library.PullToRefreshScrollView>
 </LinearLayout>
