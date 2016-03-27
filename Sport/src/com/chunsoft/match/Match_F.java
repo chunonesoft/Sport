@@ -3,6 +3,7 @@ package com.chunsoft.match;
 import java.util.ArrayList;
 import java.util.List;
 
+import android.app.ProgressDialog;
 import android.content.Context;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
@@ -14,10 +15,21 @@ import android.widget.LinearLayout;
 import android.widget.ScrollView;
 import android.widget.Toast;
 
-import com.chunsoft.adapter.Match_Adapter;
+import com.android.volley.Request.Method;
+import com.android.volley.Response;
+import com.chunsoft.adapter.CommonAdapter;
+import com.chunsoft.adapter.ViewHolder;
 import com.chunsoft.bean.ADInfo;
-import com.chunsoft.bean.MatchBean;
+import com.chunsoft.bean.ImmediateBean;
+import com.chunsoft.bean.Immediate_leagues_Bean;
+import com.chunsoft.bean.MatchesBean;
+import com.chunsoft.bean.VolleyDataCallback;
+import com.chunsoft.net.AbstractVolleyErrorListener;
+import com.chunsoft.net.Constant;
+import com.chunsoft.net.GsonRequest;
+import com.chunsoft.net.MyApplication;
 import com.chunsoft.sport.R;
+import com.chunsoft.utils.ToastUtil;
 import com.chunsoft.view.ImageCycleView;
 import com.chunsoft.view.ImageCycleView.ImageCycleViewListener;
 import com.chunsoft.view.MyListView;
@@ -34,22 +46,24 @@ public class Match_F extends Fragment implements OnRefreshListener2<ScrollView> 
 	private ImageCycleView mAdView;
 	private PullToRefreshScrollView scrollview;
 	private LinearLayout layout;
-	private MyListView myLv;
-	private List<MatchBean> datas = new ArrayList<MatchBean>();
-	private MatchBean bean;
-
+	MyListView myLv;
+	ProgressDialog dialog = null;
 	/**
 	 * variable statement
 	 */
-	private Match_Adapter adapter;
+	private MatchesAdapterC adapter;
 	private Context mContext;
 	private ArrayList<ADInfo> infos = new ArrayList<ADInfo>();
 	private String[] imageUrls = {
-			"http://img.taodiantong.cn/v55183/infoimg/2013-07/130720115322ky.jpg",
-			"http://pic30.nipic.com/20130626/8174275_085522448172_2.jpg",
-			"http://pic18.nipic.com/20111215/577405_080531548148_2.jpg",
-			"http://pic15.nipic.com/20110722/2912365_092519919000_2.jpg",
-			"http://pic.58pic.com/58pic/12/64/27/55U58PICrdX.jpg" };
+			"http://img1.sc115.com/uploads/sc/jpg/151/15115.jpg",
+			"http://imgmini.dfshurufa.com/mobile/20160313061237_1391ad9a537cfa3644b92984340d32c3_1.jpeg",
+			"http://imgsrc.baidu.com/forum/w%3D580/sign=086fb4a8319b033b2c88fcd225cf3620/39aa84d6277f9e2fdb4db4a41a30e924b999f3c0.jpg",
+			"http://news.cnyixing.cn/files/100210/1405/x_9d635231.jpg",
+			"http://n.sinaimg.cn/sports/transform/20151126/yqHo-fxmazmz8880619.jpg" };
+	private MatchesBean bean;
+	private ImmediateBean datas = new ImmediateBean();
+	private List<Immediate_leagues_Bean> immediate_leagues;
+	private List<MatchesBean> matches = new ArrayList<MatchesBean>();
 
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -68,13 +82,39 @@ public class Match_F extends Fragment implements OnRefreshListener2<ScrollView> 
 			info.setUrl(imageUrls[i]);
 			info.setContent("top-->" + i);
 			infos.add(info);
-
-			bean = new MatchBean();
-			bean.teamname1 = "1";
-			datas.add(bean);
 		}
 
 		mAdView.setImageResources(infos, mAdCycleViewListener);
+
+		getMatchesData(new VolleyDataCallback<ImmediateBean>() {
+			@Override
+			public void onSuccess(ImmediateBean datas) {
+				matches = new ArrayList<MatchesBean>();
+				matches = datas.matches;
+				adapter = new MatchesAdapterC(getActivity().getApplication(),
+						matches, R.layout.match_item);
+				myLv.setAdapter(adapter);
+				if (dialog != null && dialog.isShowing()) {
+					dialog.dismiss();
+					dialog = null;
+				}
+			}
+		});
+
+		// matches = new ArrayList<MatchesBean>();
+		//
+		// for (int i = 0; i < 6; i++) {
+		// bean = new MatchesBean();
+		// bean.begin = "";
+		// matches.add(bean);
+		// }
+
+		// matches = datas.matches;
+
+		// adapter = new Match_Adapter(matches, mContext);
+
+		// myLv.setAdapter(adapter);
+
 		layout.setFocusable(true);
 		layout.setFocusableInTouchMode(true);
 		layout.requestFocus();
@@ -85,16 +125,15 @@ public class Match_F extends Fragment implements OnRefreshListener2<ScrollView> 
 		// 上拉、下拉设定
 		scrollview.setMode(Mode.BOTH);
 		scrollview.setOnRefreshListener(this);
-		adapter = new Match_Adapter(datas, mContext);
-		myLv.setAdapter(adapter);
+
 	}
 
 	private void FindView(View view) {
+		myLv = (MyListView) view.findViewById(R.id.myLv);
 		mAdView = (ImageCycleView) view.findViewById(R.id.ad_view);
 		scrollview = (PullToRefreshScrollView) view
 				.findViewById(R.id.pull_refresh_scrollview);
 		layout = (LinearLayout) view.findViewById(R.id.layout);
-		myLv = (MyListView) view.findViewById(R.id.myLv);
 	}
 
 	private ImageCycleViewListener mAdCycleViewListener = new ImageCycleViewListener() {
@@ -143,24 +182,72 @@ public class Match_F extends Fragment implements OnRefreshListener2<ScrollView> 
 	 * get more data
 	 */
 	private void getMoreData() {
-		for (int i = 0; i < 5; i++) {
-			bean = new MatchBean();
-			bean.teamname1 = "1";
-			datas.add(bean);
-			adapter.notifyDataSetChanged();
-		}
+		ToastUtil.showLongToast(getActivity().getApplication(), "没有更多数据");
+		scrollview.onRefreshComplete();
 	}
 
 	/**
 	 * refresh data
 	 */
 	private void refreshData() {
-		for (int i = 0; i < 15; i++) {
-			bean = new MatchBean();
-			bean.teamname1 = "1";
-			datas.add(bean);
-			adapter.notifyDataSetChanged();
-		}
+		matches.clear();
+		getMatchesData(new VolleyDataCallback<ImmediateBean>() {
+			@Override
+			public void onSuccess(ImmediateBean datas) {
+				matches = new ArrayList<MatchesBean>();
+				matches = datas.matches;
+				adapter = new MatchesAdapterC(getActivity().getApplication(),
+						matches, R.layout.match_item);
+				myLv.setAdapter(adapter);
+
+				if (dialog != null && dialog.isShowing()) {
+					dialog.dismiss();
+					dialog = null;
+				}
+			}
+		});
+		scrollview.onRefreshComplete();
 	}
 
+	private void getMatchesData(final VolleyDataCallback<ImmediateBean> callback) {
+		String URL = Constant.IP + Constant.immediate;
+		if (dialog == null) {
+			dialog = ProgressDialog.show(mContext, "", "正在加载...");
+			dialog.show();
+		}
+		GsonRequest<ImmediateBean> request = new GsonRequest<>(Method.GET, URL,
+				"", new Response.Listener<ImmediateBean>() {
+					@Override
+					public void onResponse(ImmediateBean arg0) {
+						callback.onSuccess(arg0);
+					}
+
+				}, new AbstractVolleyErrorListener(mContext) {
+					@Override
+					public void onError() {
+
+					}
+
+				}, ImmediateBean.class);
+		MyApplication.getInstance().addToRequestQueue(request);
+	}
+
+	class MatchesAdapterC extends CommonAdapter<MatchesBean> {
+
+		public MatchesAdapterC(Context context, List<MatchesBean> datas,
+				int layoutId) {
+			super(context, datas, layoutId);
+		}
+
+		@Override
+		public void convert(ViewHolder holder, MatchesBean t) {
+			holder.setText(R.id.tv_status, t.status);
+			holder.setText(R.id.tv_cn_name, t.league.cn_name);
+			holder.setText(R.id.match_time, t.match_time);
+			holder.setText(R.id.tv_team1, t.team1.cn_name);
+			holder.setText(R.id.tv_team2, t.team2.cn_name);
+			holder.setText(R.id.tv_home_score, t.current_match.home_score);
+			holder.setText(R.id.tv_guest_score, t.current_match.guest_score);
+		}
+	}
 }

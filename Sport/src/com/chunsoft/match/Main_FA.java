@@ -17,10 +17,10 @@ public class Main_FA extends FragmentActivity implements OnClickListener {
 	private ImageView[] btn_menu = new ImageView[3];
 
 	/** resources statement */
-	private int menu_id[] = { R.id.iv_menu_0, R.id.iv_menu_1, R.id.iv_menu_2 };
-	private int selectOn[] = { R.drawable.guide_home_on,
-			R.drawable.guide_tfaccount_on, R.drawable.guide_account_on };
-	private int selectOff[] = { R.drawable.bt_menu_0_select,
+	int menu_id[] = { R.id.iv_menu_0, R.id.iv_menu_1, R.id.iv_menu_2 };
+	int selectOn[] = { R.drawable.guide_home_on, R.drawable.guide_tfaccount_on,
+			R.drawable.guide_account_on };
+	int selectOff[] = { R.drawable.bt_menu_0_select,
 			R.drawable.bt_menu_1_select, R.drawable.bt_menu_2_select };
 
 	/** Match Fragment */
@@ -98,6 +98,13 @@ public class Main_FA extends FragmentActivity implements OnClickListener {
 
 		default:
 			break;
+		}
+		// 设置按钮的选中和未选中资源
+		for (int i = 0; i < menu_id.length; i++) {
+			btn_menu[i].setImageResource(selectOff[i]);
+			if (v.getId() == menu_id[i]) {
+				btn_menu[i].setImageResource(selectOn[i]);
+			}
 		}
 	}
 

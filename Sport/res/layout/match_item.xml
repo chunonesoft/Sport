@@ -4,27 +4,30 @@
     android:layout_height="match_parent"
     android:background="@color/white"
     android:orientation="vertical" >
-    <RelativeLayout
+    <RelativeLayout        
         android:layout_width="match_parent"
         android:layout_height="wrap_content" 
         >
         <TextView 
-            android:id="@+id/tv_week"
+            android:id="@+id/tv_status"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:textColor="@color/title"
             android:layout_margin="10dp"
-            android:text="周三"
+            android:text="76'"
             />
+        <!-- 联赛名称 -->
         <TextView
+            android:id="@+id/tv_cn_name"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="英超联赛"
-            android:layout_toRightOf="@id/tv_week"
+            android:layout_toRightOf="@id/tv_status"
             android:layout_margin="10dp"
             android:textColor="#9f9f9f"
              />
         <TextView
+            android:id="@+id/match_time"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="3月26日 12:00"
@@ -34,7 +37,6 @@
              />
     </RelativeLayout>
     <View
-        android:layout_marginTop="5dp"
         android:layout_marginLeft="10dp"
         android:layout_marginRight="10dp"
         android:layout_width="match_parent"
@@ -91,13 +93,14 @@
         android:layout_marginTop="10dp"
         >
         <ImageView
+            android:id="@+id/iv_focus"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:background="@drawable/save1" 
             android:layout_marginLeft="20dp"
             />
         <TextView 
-            android:id="@+id/tv_score1"
+            android:id="@+id/tv_home_score"
             android:layout_width="0dp"
             android:layout_weight="1"
             android:layout_height="wrap_content"
@@ -118,7 +121,7 @@
             />
         
         <TextView 
-            android:id="@+id/tv_score2"
+            android:id="@+id/tv_guest_score"
             android:layout_width="0dp"
             android:layout_weight="1"
             android:layout_height="wrap_content"
@@ -129,6 +132,7 @@
             android:gravity="left"
             />
         <ImageView
+            android:id="@+id/iv_big_data"
            android:layout_width="wrap_content"
            android:layout_height="wrap_content"
            android:background="@drawable/bigdata" 
