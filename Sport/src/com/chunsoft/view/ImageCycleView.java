@@ -32,7 +32,6 @@ import com.chunsoft.sport.R;
  * 
  */
 public class ImageCycleView extends LinearLayout {
-
 	/**
 	 * 上下文
 	 */

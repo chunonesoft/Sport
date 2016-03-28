@@ -1,16 +1,19 @@
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
-    android:layout_width="match_parent"
-    android:layout_height="wrap_content"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent"
     android:background="#FFFFFF"
+    android:orientation="vertical"
      >
 
-    <RelativeLayout
+    <LinearLayout
         android:id="@+id/show_layout"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:layout_above="@+id/menu_line" >
-    </RelativeLayout>
+        android:layout_height="0dp"
+        android:layout_weight="1"
+        android:orientation="vertical"
+         >
+    </LinearLayout>
 
     <View 
         android:id="@+id/menu_line"
@@ -89,4 +92,4 @@
         </LinearLayout>
     </LinearLayout>
 
-</RelativeLayout>
+</LinearLayout>

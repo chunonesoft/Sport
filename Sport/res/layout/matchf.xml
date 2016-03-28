@@ -2,6 +2,7 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="fill_parent"
     android:layout_height="fill_parent"
+    android:background="@color/bg_Gray"
     android:orientation="vertical" >
 
     <LinearLayout
@@ -19,22 +20,23 @@
         xmlns:ptr="http://schemas.android.com/apk/res-auto"
         android:id="@+id/pull_refresh_scrollview"
         android:layout_width="fill_parent"
-        android:layout_height="match_parent"
+        android:layout_height="fill_parent"
         android:fillViewport="true"
         ptr:ptrAnimationStyle="flip"
+        
         ptr:ptrMode="both" >
      <LinearLayout
             android:id="@+id/layout"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
+            android:layout_width="fill_parent"
+            android:layout_height="fill_parent"
             android:orientation="vertical" 
             >
-       			<com.chunsoft.view.ImageCycleView
-                android:id="@+id/ad_view"
-                android:layout_width="match_parent"
-                android:layout_height="160dp"
-                 />
-       			<View
+   			<com.chunsoft.view.ImageCycleView
+            android:id="@+id/ad_view"
+            android:layout_width="match_parent"
+            android:layout_height="160dp"
+             />
+       <View
         android:layout_width="match_parent"
         android:layout_height="1dp"
         android:background="@color/top_line" />
@@ -70,7 +72,7 @@
         android:layout_width="match_parent"
         android:layout_height="1dp"
         android:background="@color/top_line" />
-    <TextView
+     <TextView
         android:layout_width="match_parent"
         android:layout_height="26dp"
         android:gravity="center_vertical"
@@ -78,15 +80,17 @@
         android:textColor="#767b7e"
         android:background="#f3f3f3"
         android:paddingLeft="10dp"
+        /> 
+	<ListView
+        android:id="@+id/myLv"
+        android:layout_width="fill_parent"
+        android:layout_height="0dp"
+        android:dividerHeight="3dp"
+        android:layout_weight="1"
+        android:background="#eeeeee"
+        android:visibility="visible"	             
         />
-		<com.chunsoft.view.MyListView
-	             android:id="@+id/myLv"
-	             android:layout_width="fill_parent"
-	             android:layout_height="match_parent"
-	             android:dividerHeight="3dp"
-	             android:background="#eeeeee"	             
-	             ></com.chunsoft.view.MyListView>
-		</LinearLayout>
+	</LinearLayout>
 </com.handmark.pulltorefresh.library.PullToRefreshScrollView>
 </LinearLayout>
 

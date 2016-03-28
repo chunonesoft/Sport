@@ -24,7 +24,8 @@ public class Main_FA extends FragmentActivity implements OnClickListener {
 			R.drawable.bt_menu_1_select, R.drawable.bt_menu_2_select };
 
 	/** Match Fragment */
-	private Match_F match_F;
+	// private Match_F match_F;
+	private Match match_F;
 	/** Event Fragment */
 	private Event_F event_F;
 	/** My Fragment */
@@ -43,7 +44,8 @@ public class Main_FA extends FragmentActivity implements OnClickListener {
 			btn_menu[i].setOnClickListener(this);
 		}
 		if (match_F == null) {
-			match_F = new Match_F();
+			// match_F = new Match_F();
+			match_F = new Match();
 			if (!match_F.isHidden()) {
 				addFragment(match_F);
 				showFragment(match_F);
@@ -61,7 +63,8 @@ public class Main_FA extends FragmentActivity implements OnClickListener {
 		switch (v.getId()) {
 		case R.id.iv_menu_0:
 			if (match_F == null) {
-				match_F = new Match_F();
+				// match_F = new Match_F();
+				match_F = new Match();
 				if (!match_F.isHidden())
 					addFragment(match_F);
 				showFragment(match_F);

@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent"
+    android:background="@color/bg_Gray"
+    android:orientation="vertical" >
+
+    <LinearLayout
+        android:id="@+id/ll1"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical" 
+        >
+     <include
+        	android:layout_width="match_parent"
+        	android:layout_height="45dp"
+        	layout="@layout/top_menu" />
+	</LinearLayout>
+     <com.handmark.pulltorefresh.library.PullToRefreshScrollView 
+        xmlns:ptr="http://schemas.android.com/apk/res-auto"
+        android:id="@+id/pull_refresh_scrollview"
+        android:layout_width="match_parent"
+        android:layout_height="fill_parent"
+        android:fillViewport="true"
+        ptr:ptrAnimationStyle="flip"
+        ptr:ptrMode="both" >
+    <ListView
+        android:id="@+id/myLv"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:dividerHeight="3dp"
+        android:fillViewport="true"
+        android:background="#eeeeee"	             
+        />
+</com.handmark.pulltorefresh.library.PullToRefreshScrollView>
+</LinearLayout>
+
+
