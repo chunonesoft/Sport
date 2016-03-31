@@ -11,7 +11,6 @@ import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
-import android.view.View.OnClickListener;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
@@ -61,28 +60,10 @@ public class Event_F extends Fragment implements IXListViewListener {
 	private void init() {
 		mContext = getActivity();
 		tv_title.setText("赛事");
-		View view = LayoutInflater.from(mContext)
-				.inflate(R.layout.match2, null);
-		TextView tv_view = (TextView) view.findViewById(R.id.tv_result);
-		tv_view.setOnClickListener(new OnClickListener() {
-			@Override
-			public void onClick(View v) {
-				ToastUtil.showShortToast(mContext, "你大爷的真不容易");
-			}
-		});
-		lv.addHeaderView(view);
 		lv.setXListViewListener(this);
 		// 设置可以进行下拉加载的功能
 		lv.setPullLoadEnable(true);
 		lv.setPullRefreshEnable(true);
-		// for (int i = 0; i < 15; i++) {
-		// bean = new MatchesBean();
-		// bean.begin = "1";
-		// datas.add(bean);
-		// }
-		// adapter = new EventAdapter(mContext, datas, R.layout.match_item);
-		//
-		// lv.setAdapter(adapter);
 		getMatchesData(new VolleyDataCallback<ImmediateBean>() {
 			@Override
 			public void onSuccess(ImmediateBean datas) {
@@ -175,7 +156,7 @@ public class Event_F extends Fragment implements IXListViewListener {
 	}
 
 	private void getMatchesData(final VolleyDataCallback<ImmediateBean> callback) {
-		String URL = Constant.IP + Constant.immediate;
+		String URL = Constant.IP + Constant.IMMEDIATE;
 		if (dialog == null) {
 			dialog = ProgressDialog.show(mContext, "", "正在加载...");
 			dialog.show();

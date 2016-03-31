@@ -1,6 +1,8 @@
 package com.chunsoft.match;
 
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 import android.app.ProgressDialog;
@@ -11,9 +13,6 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
-import android.widget.LinearLayout;
-import android.widget.ListView;
-import android.widget.ScrollView;
 import android.widget.Toast;
 
 import com.android.volley.Request.Method;
@@ -30,25 +29,21 @@ import com.chunsoft.net.Constant;
 import com.chunsoft.net.GsonRequest;
 import com.chunsoft.net.MyApplication;
 import com.chunsoft.sport.R;
-import com.chunsoft.utils.ListScrollUtil;
 import com.chunsoft.utils.ToastUtil;
 import com.chunsoft.view.ImageCycleView;
 import com.chunsoft.view.ImageCycleView.ImageCycleViewListener;
-import com.handmark.pulltorefresh.library.PullToRefreshBase;
-import com.handmark.pulltorefresh.library.PullToRefreshBase.Mode;
-import com.handmark.pulltorefresh.library.PullToRefreshBase.OnRefreshListener2;
-import com.handmark.pulltorefresh.library.PullToRefreshScrollView;
+import com.chunsoft.view.xListview.XListView;
+import com.chunsoft.view.xListview.XListView.IXListViewListener;
 import com.nostra13.universalimageloader.core.ImageLoader;
 
-public class Match_F extends Fragment implements OnRefreshListener2<ScrollView> {
+public class Match_F extends Fragment implements IXListViewListener {
 	/**
 	 * widget statement
 	 */
-	private ImageCycleView mAdView;
-	private PullToRefreshScrollView scrollview;
-	private LinearLayout layout;
-	ListView myLv;
-	ProgressDialog dialog = null;
+	ImageCycleView mAdView;
+	View cycleview;
+	private XListView myLv;
+	private ProgressDialog dialog = null;
 	/**
 	 * variable statement
 	 */
@@ -69,77 +64,50 @@ public class Match_F extends Fragment implements OnRefreshListener2<ScrollView> 
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container,
 			Bundle savedInstanceState) {
-		View view = LayoutInflater.from(getActivity()).inflate(R.layout.matchf,
+		View view = LayoutInflater.from(getActivity()).inflate(R.layout.match1,
 				null);
 		FindView(view);
 		init();
+
 		return view;
 	}
 
 	private void init() {
 		mContext = getActivity();
+		cycleview = LayoutInflater.from(mContext)
+				.inflate(R.layout.match2, null);
+		mAdView = (ImageCycleView) cycleview.findViewById(R.id.ad_view);
+
+		myLv.addHeaderView(cycleview);
+		myLv.setXListViewListener(this);
+		// 设置可以进行下拉加载的功能
+		myLv.setPullLoadEnable(true);
+		myLv.setPullRefreshEnable(true);
 		for (int i = 0; i < imageUrls.length; i++) {
 			ADInfo info = new ADInfo();
 			info.setUrl(imageUrls[i]);
 			info.setContent("top-->" + i);
 			infos.add(info);
 		}
-
 		mAdView.setImageResources(infos, mAdCycleViewListener);
-
 		getMatchesData(new VolleyDataCallback<ImmediateBean>() {
 			@Override
 			public void onSuccess(ImmediateBean datas) {
-
 				matches = new ArrayList<MatchesBean>();
 				matches = datas.matches;
-				mAdView.requestFocus();
-				mAdView.setFocusable(true);
-				mAdView.setFocusableInTouchMode(true);
 				adapter = new MatchesAdapterC(getActivity().getApplication(),
 						matches, R.layout.match_item);
 				myLv.setAdapter(adapter);
-				ListScrollUtil.setListViewHeightBasedOnChildren(myLv);
 				if (dialog != null && dialog.isShowing()) {
 					dialog.dismiss();
 					dialog = null;
 				}
 			}
 		});
-
-		// matches = new ArrayList<MatchesBean>();
-		//
-		// for (int i = 0; i < 6; i++) {
-		// bean = new MatchesBean();
-		// bean.begin = "";
-		// matches.add(bean);
-		// }
-
-		// matches = datas.matches;
-
-		// adapter = new Match_Adapter(matches, mContext);
-
-		// myLv.setAdapter(adapter);
-
-		mAdView.setFocusable(true);
-		mAdView.setFocusableInTouchMode(true);
-		mAdView.requestFocus();
-		scrollview.getLoadingLayoutProxy().setLastUpdatedLabel("上次刷新时间");
-		scrollview.getLoadingLayoutProxy().setPullLabel("下拉刷新");
-		scrollview.getLoadingLayoutProxy().setRefreshingLabel("正在加载更多");
-		scrollview.getLoadingLayoutProxy().setReleaseLabel("松开即可刷新");
-		// 上拉、下拉设定
-		scrollview.setMode(Mode.BOTH);
-		scrollview.setOnRefreshListener(this);
-
 	}
 
 	private void FindView(View view) {
-		myLv = (ListView) view.findViewById(R.id.myLv);
-		mAdView = (ImageCycleView) view.findViewById(R.id.ad_view);
-		scrollview = (PullToRefreshScrollView) view
-				.findViewById(R.id.pull_refresh_scrollview);
-		layout = (LinearLayout) view.findViewById(R.id.layout);
+		myLv = (XListView) view.findViewById(R.id.x_lv);
 	}
 
 	private ImageCycleViewListener mAdCycleViewListener = new ImageCycleViewListener() {
@@ -174,49 +142,8 @@ public class Match_F extends Fragment implements OnRefreshListener2<ScrollView> 
 		mAdView.pushImageCycle();
 	}
 
-	@Override
-	public void onPullDownToRefresh(PullToRefreshBase<ScrollView> refreshView) {
-		refreshData();
-	}
-
-	@Override
-	public void onPullUpToRefresh(PullToRefreshBase<ScrollView> refreshView) {
-		getMoreData();
-	}
-
-	/**
-	 * get more data
-	 */
-	private void getMoreData() {
-		ToastUtil.showLongToast(getActivity().getApplication(), "没有更多数据");
-		scrollview.onRefreshComplete();
-	}
-
-	/**
-	 * refresh data
-	 */
-	private void refreshData() {
-		matches.clear();
-		getMatchesData(new VolleyDataCallback<ImmediateBean>() {
-			@Override
-			public void onSuccess(ImmediateBean datas) {
-				matches = new ArrayList<MatchesBean>();
-				matches = datas.matches;
-				adapter = new MatchesAdapterC(getActivity().getApplication(),
-						matches, R.layout.match_item);
-				myLv.setAdapter(adapter);
-				ListScrollUtil.setListViewHeightBasedOnChildren(myLv);
-				if (dialog != null && dialog.isShowing()) {
-					dialog.dismiss();
-					dialog = null;
-				}
-			}
-		});
-		scrollview.onRefreshComplete();
-	}
-
 	public void getMatchesData(final VolleyDataCallback<ImmediateBean> callback) {
-		String URL = Constant.IP + Constant.immediate;
+		String URL = Constant.IP + Constant.IMMEDIATE;
 		if (dialog == null) {
 			dialog = ProgressDialog.show(mContext, "", "正在加载...");
 			dialog.show();
@@ -255,5 +182,51 @@ public class Match_F extends Fragment implements OnRefreshListener2<ScrollView> 
 			holder.setText(R.id.tv_home_score, t.current_match.home_score);
 			holder.setText(R.id.tv_guest_score, t.current_match.guest_score);
 		}
+	}
+
+	@Override
+	public void onRefresh() {
+		matches.clear();
+		getMatchesData(new VolleyDataCallback<ImmediateBean>() {
+			@Override
+			public void onSuccess(ImmediateBean datas) {
+				matches = new ArrayList<MatchesBean>();
+				matches = datas.matches;
+				adapter = new MatchesAdapterC(getActivity().getApplication(),
+						matches, R.layout.match_item);
+				myLv.setAdapter(adapter);
+				if (dialog != null && dialog.isShowing()) {
+					dialog.dismiss();
+					dialog = null;
+				}
+			}
+		});
+		onLoad();
+	}
+
+	@Override
+	public void onLoadMore() {
+		ToastUtil.showLongToast(getActivity().getApplication(), "没有更多数据");
+	}
+
+	/** 停止加载和刷新 */
+	private void onLoad() {
+		myLv.stopRefresh();
+		// 停止加载更多
+		myLv.stopLoadMore();
+		// 设置最后一次刷新时间
+		myLv.setRefreshTime(getCurrentTime(System.currentTimeMillis()));
+	}
+
+	/** 简单的时间格式 */
+	public static SimpleDateFormat mDateFormat = new SimpleDateFormat(
+			"MM-dd HH:mm");
+
+	public static String getCurrentTime(long time) {
+		if (0 == time) {
+			return "";
+		}
+
+		return mDateFormat.format(new Date(time));
 	}
 }

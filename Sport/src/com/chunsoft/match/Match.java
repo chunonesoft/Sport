@@ -105,7 +105,7 @@ public class Match extends Fragment implements OnRefreshListener2<ScrollView> {
 	}
 
 	private void getMatchesData(final VolleyDataCallback<ImmediateBean> callback) {
-		String URL = Constant.IP + Constant.immediate;
+		String URL = Constant.IP + Constant.IMMEDIATE;
 		if (dialog == null) {
 			dialog = ProgressDialog.show(mContext, "", "正在加载...");
 			dialog.show();

@@ -1,5 +1,10 @@
 package com.chunsoft.match;
 
+import java.util.Calendar;
+
+import android.app.AlarmManager;
+import android.app.PendingIntent;
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentActivity;
@@ -9,7 +14,11 @@ import android.view.View.OnClickListener;
 import android.widget.ImageView;
 
 import com.chunsoft.event.Event_F;
+import com.chunsoft.my.Login_F;
 import com.chunsoft.my.My_F;
+import com.chunsoft.net.Constant;
+import com.chunsoft.service.FavoriteNotifyService;
+import com.chunsoft.service.MatchRecommentNotifyService;
 import com.chunsoft.sport.R;
 
 public class Main_FA extends FragmentActivity implements OnClickListener {
@@ -22,20 +31,24 @@ public class Main_FA extends FragmentActivity implements OnClickListener {
 			R.drawable.guide_account_on };
 	int selectOff[] = { R.drawable.bt_menu_0_select,
 			R.drawable.bt_menu_1_select, R.drawable.bt_menu_2_select };
-
+	protected AlarmManager alarmManager;
 	/** Match Fragment */
 	// private Match_F match_F;
-	private Match match_F;
+	private Match_F match_F;
 	/** Event Fragment */
 	private Event_F event_F;
 	/** My Fragment */
 	private My_F my_F;
+	/** login Fragment */
+	private Login_F login_F;
 
 	@Override
 	protected void onCreate(Bundle arg0) {
 		super.onCreate(arg0);
 		setContentView(R.layout.main);
 		initView();
+		startFavoriteRecommendService();
+		startMatchRecommendService();
 	}
 
 	private void initView() {
@@ -45,7 +58,7 @@ public class Main_FA extends FragmentActivity implements OnClickListener {
 		}
 		if (match_F == null) {
 			// match_F = new Match_F();
-			match_F = new Match();
+			match_F = new Match_F();
 			if (!match_F.isHidden()) {
 				addFragment(match_F);
 				showFragment(match_F);
@@ -64,7 +77,7 @@ public class Main_FA extends FragmentActivity implements OnClickListener {
 		case R.id.iv_menu_0:
 			if (match_F == null) {
 				// match_F = new Match_F();
-				match_F = new Match();
+				match_F = new Match_F();
 				if (!match_F.isHidden())
 					addFragment(match_F);
 				showFragment(match_F);
@@ -87,14 +100,27 @@ public class Main_FA extends FragmentActivity implements OnClickListener {
 			}
 			break;
 		case R.id.iv_menu_2:
-			if (my_F == null) {
-				my_F = new My_F();
-				if (!my_F.isHidden())
-					addFragment(my_F);
-				showFragment(my_F);
+			if (!Constant.isLogin) {
+				if (login_F == null) {
+					login_F = new Login_F();
+					if (!login_F.isHidden())
+						addFragment(login_F);
+					showFragment(login_F);
+				} else {
+					if (login_F.isHidden()) {
+						showFragment(login_F);
+					}
+				}
 			} else {
-				if (my_F.isHidden()) {
+				if (my_F == null) {
+					my_F = new My_F();
+					if (!my_F.isHidden())
+						addFragment(my_F);
 					showFragment(my_F);
+				} else {
+					if (my_F.isHidden()) {
+						showFragment(my_F);
+					}
 				}
 			}
 			break;
@@ -140,7 +166,38 @@ public class Main_FA extends FragmentActivity implements OnClickListener {
 		if (my_F != null) {
 			ft.hide(my_F);
 		}
+		if (login_F != null) {
+			ft.hide(login_F);
+		}
 		ft.show(fragment);
 		ft.commitAllowingStateLoss();
+	}
+
+	private void startMatchRecommendService() {
+		Intent intent = new Intent(this, MatchRecommentNotifyService.class);
+		// 设置定时查询
+		PendingIntent pendingIntent = PendingIntent.getService(this, 0, intent,
+				0);
+		Calendar calendar = Calendar.getInstance();
+		calendar.setTimeInMillis(System.currentTimeMillis());
+		calendar.add(Calendar.SECOND, 10);
+		long frequency = 120 * 1000; // 2分钟检查一次
+		alarmManager = (AlarmManager) getSystemService(ALARM_SERVICE);
+		alarmManager.setRepeating(AlarmManager.RTC_WAKEUP,
+				calendar.getTimeInMillis(), frequency, pendingIntent);
+	}
+
+	private void startFavoriteRecommendService() {
+		Intent intent = new Intent(this, FavoriteNotifyService.class);
+		// 设置定时查询
+		PendingIntent pendingIntent = PendingIntent.getService(this, 0, intent,
+				0);
+		Calendar calendar = Calendar.getInstance();
+		calendar.setTimeInMillis(System.currentTimeMillis());
+		calendar.add(Calendar.SECOND, 10);
+		long frequency = 120 * 1000; // 2分钟检查一次
+		alarmManager = (AlarmManager) getSystemService(ALARM_SERVICE);
+		alarmManager.setRepeating(AlarmManager.RTC_WAKEUP,
+				calendar.getTimeInMillis(), frequency, pendingIntent);
 	}
 }

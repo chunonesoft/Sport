@@ -4,7 +4,7 @@
     android:versionName="1.0" >
 
     <uses-sdk
-        android:minSdkVersion="14"
+        android:minSdkVersion="16"
         android:targetSdkVersion="21" />
 
     <uses-permission android:name="android.permission.INTERNET" />
@@ -12,7 +12,7 @@
     <application
         android:name="com.chunsoft.net.MyApplication"
         android:allowBackup="true"
-        android:icon="@drawable/ic_launcher"
+        android:icon="@drawable/logo"
         android:label="@string/app_name"
         android:theme="@style/AppTheme"
         >
@@ -25,6 +25,17 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+        <activity 
+            android:name="com.chunsoft.match.MatchImmediateShowActivity"></activity>
+        <service
+            android:name="com.chunsoft.service.MatchRecommentNotifyService"
+            android:enabled="true"
+            android:exported="false" />
+        <service
+            android:name="com.chunsoft.service.FavoriteNotifyService"
+            android:enabled="true"
+            android:exported="false" />
+
     </application>
 
 </manifest>
