@@ -11,8 +11,10 @@ import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
+import android.view.View.OnClickListener;
 import android.view.ViewGroup;
 import android.widget.ImageView;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.android.volley.Request.Method;
@@ -29,6 +31,7 @@ import com.chunsoft.net.Constant;
 import com.chunsoft.net.GsonRequest;
 import com.chunsoft.net.MyApplication;
 import com.chunsoft.sport.R;
+import com.chunsoft.utils.IntentUti;
 import com.chunsoft.utils.ToastUtil;
 import com.chunsoft.view.ImageCycleView;
 import com.chunsoft.view.ImageCycleView.ImageCycleViewListener;
@@ -36,7 +39,8 @@ import com.chunsoft.view.xListview.XListView;
 import com.chunsoft.view.xListview.XListView.IXListViewListener;
 import com.nostra13.universalimageloader.core.ImageLoader;
 
-public class Match_F extends Fragment implements IXListViewListener {
+public class Match_F extends Fragment implements IXListViewListener,
+		OnClickListener {
 	/**
 	 * widget statement
 	 */
@@ -44,6 +48,7 @@ public class Match_F extends Fragment implements IXListViewListener {
 	View cycleview;
 	private XListView myLv;
 	private ProgressDialog dialog = null;
+	private TextView tv_analysis, tv_statistic;
 	/**
 	 * variable statement
 	 */
@@ -68,7 +73,7 @@ public class Match_F extends Fragment implements IXListViewListener {
 				null);
 		FindView(view);
 		init();
-
+		Click();
 		return view;
 	}
 
@@ -77,6 +82,8 @@ public class Match_F extends Fragment implements IXListViewListener {
 		cycleview = LayoutInflater.from(mContext)
 				.inflate(R.layout.match2, null);
 		mAdView = (ImageCycleView) cycleview.findViewById(R.id.ad_view);
+		tv_analysis = (TextView) cycleview.findViewById(R.id.tv_analysis);
+		tv_statistic = (TextView) cycleview.findViewById(R.id.tv_statistic);
 
 		myLv.addHeaderView(cycleview);
 		myLv.setXListViewListener(this);
@@ -204,6 +211,11 @@ public class Match_F extends Fragment implements IXListViewListener {
 		onLoad();
 	}
 
+	private void Click() {
+		tv_analysis.setOnClickListener(this);
+		tv_statistic.setOnClickListener(this);
+	}
+
 	@Override
 	public void onLoadMore() {
 		ToastUtil.showLongToast(getActivity().getApplication(), "没有更多数据");
@@ -228,5 +240,19 @@ public class Match_F extends Fragment implements IXListViewListener {
 		}
 
 		return mDateFormat.format(new Date(time));
+	}
+
+	@Override
+	public void onClick(View v) {
+		switch (v.getId()) {
+		case R.id.tv_analysis:
+			IntentUti.IntentTo(mContext, Analysis_A.class);
+			break;
+		case R.id.tv_statistic:
+			IntentUti.IntentTo(mContext, Match_Statistics_A.class);
+			break;
+		default:
+			break;
+		}
 	}
 }

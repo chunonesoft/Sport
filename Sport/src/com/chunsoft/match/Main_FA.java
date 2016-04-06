@@ -4,6 +4,7 @@ import java.util.Calendar;
 
 import android.app.AlarmManager;
 import android.app.PendingIntent;
+import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
@@ -14,12 +15,13 @@ import android.view.View.OnClickListener;
 import android.widget.ImageView;
 
 import com.chunsoft.event.Event_F;
-import com.chunsoft.my.Login_F;
+import com.chunsoft.my.Login_A;
 import com.chunsoft.my.My_F;
-import com.chunsoft.net.Constant;
 import com.chunsoft.service.FavoriteNotifyService;
 import com.chunsoft.service.MatchRecommentNotifyService;
 import com.chunsoft.sport.R;
+import com.chunsoft.utils.IntentUti;
+import com.chunsoft.utils.PreferencesUtils;
 
 public class Main_FA extends FragmentActivity implements OnClickListener {
 	/** widget statement */
@@ -39,8 +41,7 @@ public class Main_FA extends FragmentActivity implements OnClickListener {
 	private Event_F event_F;
 	/** My Fragment */
 	private My_F my_F;
-	/** login Fragment */
-	private Login_F login_F;
+	private Context mContext;
 
 	@Override
 	protected void onCreate(Bundle arg0) {
@@ -52,6 +53,7 @@ public class Main_FA extends FragmentActivity implements OnClickListener {
 	}
 
 	private void initView() {
+		mContext = Main_FA.this;
 		for (int i = 0; i < btn_menu.length; i++) {
 			btn_menu[i] = (ImageView) findViewById(menu_id[i]);
 			btn_menu[i].setOnClickListener(this);
@@ -100,17 +102,9 @@ public class Main_FA extends FragmentActivity implements OnClickListener {
 			}
 			break;
 		case R.id.iv_menu_2:
-			if (!Constant.isLogin) {
-				if (login_F == null) {
-					login_F = new Login_F();
-					if (!login_F.isHidden())
-						addFragment(login_F);
-					showFragment(login_F);
-				} else {
-					if (login_F.isHidden()) {
-						showFragment(login_F);
-					}
-				}
+			String phone = PreferencesUtils.getSharePreStr(mContext, "phone");
+			if (!phone.equals("18868448198")) {
+				IntentUti.IntentTo(mContext, Login_A.class);
 			} else {
 				if (my_F == null) {
 					my_F = new My_F();
@@ -165,9 +159,6 @@ public class Main_FA extends FragmentActivity implements OnClickListener {
 		}
 		if (my_F != null) {
 			ft.hide(my_F);
-		}
-		if (login_F != null) {
-			ft.hide(login_F);
 		}
 		ft.show(fragment);
 		ft.commitAllowingStateLoss();

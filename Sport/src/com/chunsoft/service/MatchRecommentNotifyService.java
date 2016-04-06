@@ -15,7 +15,6 @@ import android.content.SharedPreferences;
 import android.media.RingtoneManager;
 import android.net.Uri;
 import android.os.IBinder;
-import android.util.Log;
 
 import com.chunsoft.bean.MatchRecommend;
 import com.chunsoft.match.MatchImmediateShowActivity;
@@ -58,9 +57,9 @@ public class MatchRecommentNotifyService extends IntentService {
 		String lastRecommendDataTime2 = lastRecommendDataTime;
 		lastRecommendDataTime = lastRecommendDataTime1.substring(0, 10) + "%20"
 				+ lastRecommendDataTime2.substring(12, 16);
-		Log.e("-------1111", lastRecommendDataTime);
+		// Log.e("-------1111", lastRecommendDataTime);
 		Gson gson = new Gson();
-		Log.e("--------", getMatchRecommend("2016-03-31").toString());
+		// Log.e("--------", getMatchRecommend("2016-03-31").toString());
 		List<MatchRecommend> recommends = new ArrayList<MatchRecommend>();
 		recommends = gson.fromJson(getMatchRecommend(lastRecommendDataTime)
 				.toString(), new TypeToken<List<MatchRecommend>>() {

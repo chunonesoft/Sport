@@ -27,10 +27,14 @@
         </activity>
         <activity 
             android:name="com.chunsoft.match.MatchImmediateShowActivity"></activity>
+        <activity android:name="com.chunsoft.my.Login_A"/>
+        <activity android:name="com.chunsoft.my.Set_A"/>
+        <activity android:name="com.chunsoft.match.Analysis_A"></activity>
+        <activity android:name="com.chunsoft.match.Match_Statistics_A"></activity>
         <service
             android:name="com.chunsoft.service.MatchRecommentNotifyService"
             android:enabled="true"
-            android:exported="false" />
+            android:exported="false"/>
         <service
             android:name="com.chunsoft.service.FavoriteNotifyService"
             android:enabled="true"

@@ -42,20 +42,20 @@ public class FavoriteNotifyService extends IntentService {
 		String lastEventDataTime2 = lastEventDataTime;
 		lastEventDataTime = lastEventDataTime1.substring(0, 10) + "%20"
 				+ lastEventDataTime2.substring(12, 16);
-		Log.e("lastEventDataTime--------", lastEventDataTime);
+		// Log.e("lastEventDataTime--------", lastEventDataTime);
 		int userId = mPrefs.getInt("user_id", 10022);
-		Log.e("user_id--------", userId + "");
+		// Log.e("user_id--------", userId + "");
 		try {
 			Gson gson = new Gson();
-			Log.e("--------getMatchEventRecommend1",
-					getMatchEventRecommend(userId, "2016-03-01").toString());
+			// Log.e("--------getMatchEventRecommend1",
+			// getMatchEventRecommend(userId, "2016-03-01").toString());
 			List<MatchEvent> recommends = new ArrayList<MatchEvent>();
 			recommends = gson.fromJson(
 					getMatchEventRecommend(userId, "2016-03-01").toString(),
 					new TypeToken<List<MatchEvent>>() {
 					}.getType());
-			Log.e("--------getMatchEventRecommend2",
-					getMatchEventRecommend(userId, "2016-03-01").toString());
+			// Log.e("--------getMatchEventRecommend2",
+			// getMatchEventRecommend(userId, "2016-03-01").toString());
 
 			// 第一次不提示
 			if (!lastEventDataTime.equals("2016-02-01%2000:01")) {

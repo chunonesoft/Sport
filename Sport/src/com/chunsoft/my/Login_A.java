@@ -3,41 +3,49 @@ package com.chunsoft.my;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import android.app.Activity;
 import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Bundle;
-import android.support.v4.app.Fragment;
-import android.support.v4.app.FragmentTransaction;
 import android.util.Log;
-import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
-import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
+import butterknife.Bind;
+import butterknife.ButterKnife;
 
 import com.android.volley.Response;
 import com.chunsoft.bean.LoginBean;
 import com.chunsoft.bean.VolleyDataCallback;
+import com.chunsoft.match.Main_FA;
 import com.chunsoft.net.AbstractVolleyErrorListener;
 import com.chunsoft.net.Constant;
 import com.chunsoft.net.GetJsonData;
 import com.chunsoft.net.GsonRequest;
 import com.chunsoft.net.MyApplication;
 import com.chunsoft.sport.R;
+import com.chunsoft.utils.IntentUti;
+import com.chunsoft.utils.PreferencesUtils;
 import com.chunsoft.utils.ToastUtil;
 
-public class Login_F extends Fragment implements OnClickListener {
+public class Login_A extends Activity implements OnClickListener {
 	/**
 	 * widget statement
 	 */
-	private TextView tv_register, tv_wjmm;
-	private EditText et_mobile;
-	private EditText et_password;
-	private Button btn_login;
+	@Bind(R.id.tv_register)
+	TextView tv_register;
+	@Bind(R.id.tv_wjmm)
+	TextView tv_wjmm;
+	@Bind(R.id.et_mobile)
+	EditText et_mobile;
+	@Bind(R.id.et_password)
+	EditText et_password;
+	@Bind(R.id.btn_login)
+	Button btn_login;
 	private Context mContext;
 	private ProgressDialog loadDialog;
 
@@ -55,28 +63,19 @@ public class Login_F extends Fragment implements OnClickListener {
 	private JSONObject returnDatas = new JSONObject();
 
 	@Override
-	public View onCreateView(LayoutInflater inflater, ViewGroup container,
-			Bundle savedInstanceState) {
-		mContext = getActivity();
-		View view = LayoutInflater.from(mContext).inflate(R.layout.login, null);
-		FindView(view);
+	protected void onCreate(Bundle savedInstanceState) {
+		// TODO Auto-generated method stub
+		super.onCreate(savedInstanceState);
+		setContentView(R.layout.login);
+		ButterKnife.bind(this);
 		init();
 		Click();
-		return view;
 	}
 
 	private void init() {
-
+		mContext = Login_A.this;
 		loadDialog = new ProgressDialog(mContext);
 		loadDialog.setTitle("正在登录...");
-	}
-
-	private void FindView(View view) {
-		tv_wjmm = (TextView) view.findViewById(R.id.tv_wjmm);
-		tv_register = (TextView) view.findViewById(R.id.tv_register);
-		et_mobile = (EditText) view.findViewById(R.id.et_mobile);
-		et_password = (EditText) view.findViewById(R.id.et_password);
-		btn_login = (Button) view.findViewById(R.id.btn_login);
 	}
 
 	private void Click() {
@@ -107,15 +106,20 @@ public class Login_F extends Fragment implements OnClickListener {
 				ToastUtil.showShortToast(mContext, "密码不能为空");
 			}
 			if (flag1 && flag2) {
-				sendData = new JSONObject();
-				try {
-					sendData.put("user[login]", mobile);
-					sendData.put("user[password]", password);
-				} catch (JSONException e) {
-					// TODO Auto-generated catch block
-					e.printStackTrace();
-				}
-				new getData().execute("");
+				PreferencesUtils.putSharePre(mContext, "userName", "chunsoft");
+				PreferencesUtils.putSharePre(mContext, "phone", "18868448198");
+				PreferencesUtils.putSharePre(mContext, "password", "12345678");
+				PreferencesUtils.putSharePre(mContext, "id", "10022");
+				IntentUti.IntentTo(mContext, Main_FA.class);
+				// sendData = new JSONObject();
+				// try {
+				// sendData.put("user[login]", mobile);
+				// sendData.put("user[password]", password);
+				// } catch (JSONException e) {
+				// // TODO Auto-generated catch block
+				// e.printStackTrace();
+				// }
+				// new getData().execute("");
 				//
 				// getJSONRequest(mobile, password,
 				// new VolleyDataCallback<LoginBean>() {
@@ -143,18 +147,7 @@ public class Login_F extends Fragment implements OnClickListener {
 
 			break;
 		case R.id.tv_wjmm:
-			if (my_F == null) {
-				my_F = new My_F();
-				if (!my_F.isHidden())
-					addFragment(my_F);
-				showFragment(my_F);
-			} else {
-				if (my_F.isHidden()) {
-					showFragment(my_F);
-				}
-			}
-			// intent = new Intent(mContext, Wjmm_A.class);
-			// startActivity(intent);
+
 			break;
 		default:
 			break;
@@ -192,33 +185,27 @@ public class Login_F extends Fragment implements OnClickListener {
 		MyApplication.getInstance().addToRequestQueue(request);
 	}
 
-	/** add Fragment */
-	private void addFragment(Fragment fragment) {
-		FragmentTransaction ft = getActivity().getSupportFragmentManager()
-				.beginTransaction();
-		ft.add(R.id.show_layout, fragment);
-		ft.commit();
-	}
-
-	/** show Fragment */
-	private void showFragment(Fragment fragment) {
-		FragmentTransaction ft = getActivity().getSupportFragmentManager()
-				.beginTransaction();
-		removeFragment(this);
-		if (my_F != null) {
-			ft.hide(my_F);
-		}
-		ft.show(fragment);
-		ft.commitAllowingStateLoss();
-	}
-
-	/** remove Fragment */
-	private void removeFragment(Fragment fragment) {
-		FragmentTransaction ft = getActivity().getSupportFragmentManager()
-				.beginTransaction();
-		ft.remove(fragment);
-		ft.commit();
-	}
+	// /** add Fragment */
+	// private void addFragment(Fragment fragment) {
+	// FragmentTransaction ft = getActivity().getSupportFragmentManager()
+	// .beginTransaction();
+	// ft.add(R.id.show_layout, fragment);
+	// ft.commit();
+	// }
+	//
+	// /** show Fragment */
+	// /*
+	// * private void showFragment(Fragment fragment) { FragmentTransaction ft =
+	// * getActivity().getSupportFragmentManager() .beginTransaction();
+	// * removeFragment(this); if (my_F != null) { ft.hide(my_F); }
+	// * ft.show(fragment); ft.commitAllowingStateLoss(); }
+	// *//** remove Fragment */
+	// /*
+	// * private void removeFragment(Fragment fragment) { FragmentTransaction ft
+	// =
+	// * getActivity().getSupportFragmentManager() .beginTransaction();
+	// * ft.remove(fragment); ft.commit(); }
+	// */
 
 	public class getData extends AsyncTask<String, Integer, String> {
 

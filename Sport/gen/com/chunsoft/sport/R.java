@@ -9,10 +9,14 @@ package com.chunsoft.sport;
 
 public final class R {
     public static final class anim {
-        public static final int slide_in_from_bottom=0x7f040000;
-        public static final int slide_in_from_top=0x7f040001;
-        public static final int slide_out_to_bottom=0x7f040002;
-        public static final int slide_out_to_top=0x7f040003;
+        public static final int cu_push_left_in=0x7f040000;
+        public static final int cu_push_left_out=0x7f040001;
+        public static final int cu_push_right_in=0x7f040002;
+        public static final int cu_push_right_out=0x7f040003;
+        public static final int slide_in_from_bottom=0x7f040004;
+        public static final int slide_in_from_top=0x7f040005;
+        public static final int slide_out_to_bottom=0x7f040006;
+        public static final int slide_out_to_top=0x7f040007;
     }
     public static final class attr {
         /** <p>Must be a color value, in the form of "<code>#<i>rgb</i></code>", "<code>#<i>argb</i></code>",
@@ -727,104 +731,157 @@ or to a theme attribute in the form "<code>?[<i>package</i>:][<i>type</i>:]<i>na
         public static final int teamlogo2=0x7f020024;
         public static final int title_logo1=0x7f020025;
         public static final int title_logo2=0x7f020026;
-        public static final int xlistview_arrow=0x7f020027;
-        public static final int yuce=0x7f020028;
-        public static final int yuce1=0x7f020029;
-        public static final int yuce2=0x7f02002a;
+        public static final int user_10=0x7f020027;
+        public static final int user_8=0x7f020028;
+        public static final int user_9=0x7f020029;
+        public static final int xlistview_arrow=0x7f02002a;
+        public static final int yuce=0x7f02002b;
+        public static final int yuce1=0x7f02002c;
+        public static final int yuce2=0x7f02002d;
     }
     public static final class id {
-        public static final int ad_rl=0x7f06003a;
-        public static final int ad_view=0x7f060019;
+        public static final int ad_rl=0x7f060052;
+        public static final int ad_view=0x7f060026;
         public static final int both=0x7f060003;
-        public static final int btn_login=0x7f06000f;
+        public static final int btn_login=0x7f06001c;
         public static final int disabled=0x7f060004;
-        public static final int et_mobile=0x7f06000d;
-        public static final int et_password=0x7f06000e;
-        public static final int fl_inner=0x7f060034;
+        public static final int et_mobile=0x7f06001a;
+        public static final int et_password=0x7f06001b;
+        public static final int fl_inner=0x7f060047;
         public static final int flip=0x7f06000a;
         public static final int gridview=0x7f060000;
-        public static final int iv_big_data=0x7f060025;
-        public static final int iv_focus=0x7f060022;
-        public static final int iv_image1=0x7f06001f;
-        public static final int iv_image2=0x7f060020;
-        public static final int iv_logo=0x7f06002e;
-        public static final int iv_menu_0=0x7f060015;
-        public static final int iv_menu_1=0x7f060016;
-        public static final int iv_menu_2=0x7f060017;
-        public static final int layout=0x7f06002c;
-        public static final int ll1=0x7f06002a;
-        public static final int ll_bindnum=0x7f060031;
-        public static final int ll_exit=0x7f060033;
-        public static final int ll_focus=0x7f060030;
-        public static final int ll_setPassword=0x7f060032;
-        public static final int lv=0x7f06000c;
+        public static final int iv_big_data=0x7f060033;
+        public static final int iv_focus=0x7f060030;
+        public static final int iv_image1=0x7f06002d;
+        public static final int iv_image2=0x7f06002e;
+        public static final int iv_logo=0x7f060041;
+        public static final int iv_menu_0=0x7f060022;
+        public static final int iv_menu_1=0x7f060023;
+        public static final int iv_menu_2=0x7f060024;
+        public static final int layout=0x7f06003f;
+        public static final int ll1=0x7f06003d;
+        public static final int ll_about=0x7f06004c;
+        public static final int ll_checkUpdate=0x7f060044;
+        public static final int ll_exit=0x7f060046;
+        public static final int ll_feedback=0x7f060050;
+        public static final int ll_focus=0x7f060043;
+        public static final int ll_help=0x7f06004f;
+        public static final int ll_set=0x7f060045;
+        public static final int ll_share=0x7f06004d;
+        public static final int ll_update=0x7f06004e;
+        public static final int lv=0x7f060019;
         public static final int manualOnly=0x7f060005;
-        public static final int match_time=0x7f06001d;
-        public static final int menu_bottom=0x7f060014;
-        public static final int menu_line=0x7f060013;
-        public static final int myLv=0x7f06002d;
-        public static final int pager_banner=0x7f06003b;
+        public static final int match_time=0x7f06002b;
+        public static final int menu_bottom=0x7f060021;
+        public static final int menu_line=0x7f060020;
+        public static final int myLv=0x7f060040;
+        public static final int pager_banner=0x7f060053;
         public static final int pullDownFromTop=0x7f060006;
         public static final int pullFromEnd=0x7f060007;
         public static final int pullFromStart=0x7f060008;
         public static final int pullUpFromBottom=0x7f060009;
-        public static final int pull_refresh_scrollview=0x7f06002b;
-        public static final int pull_to_refresh_image=0x7f060035;
-        public static final int pull_to_refresh_progress=0x7f060036;
-        public static final int pull_to_refresh_sub_text=0x7f060038;
-        public static final int pull_to_refresh_text=0x7f060037;
+        public static final int pull_refresh_scrollview=0x7f06003e;
+        public static final int pull_to_refresh_image=0x7f060048;
+        public static final int pull_to_refresh_progress=0x7f060049;
+        public static final int pull_to_refresh_sub_text=0x7f06004b;
+        public static final int pull_to_refresh_text=0x7f06004a;
         public static final int rotate=0x7f06000b;
         public static final int scrollview=0x7f060002;
-        public static final int show_layout=0x7f060012;
-        public static final int tv_cn_name=0x7f06001c;
-        public static final int tv_guest_score=0x7f060024;
-        public static final int tv_home_score=0x7f060023;
-        public static final int tv_name=0x7f06002f;
-        public static final int tv_register=0x7f060010;
-        public static final int tv_result=0x7f06001a;
-        public static final int tv_status=0x7f06001b;
-        public static final int tv_team1=0x7f06001e;
-        public static final int tv_team2=0x7f060021;
-        public static final int tv_title=0x7f060039;
-        public static final int tv_wjmm=0x7f060011;
-        public static final int viewGroup=0x7f06003c;
-        public static final int web_view_match_show_bigdata=0x7f060029;
+        public static final int show_layout=0x7f06001f;
+        public static final int show_view=0x7f060012;
+        public static final int statistcs_show_view=0x7f06003c;
+        public static final int tv_analysis=0x7f060027;
+        public static final int tv_ball=0x7f06000d;
+        public static final int tv_cn_name=0x7f06002a;
+        public static final int tv_data=0x7f060015;
+        public static final int tv_guest_score=0x7f060032;
+        public static final int tv_home_score=0x7f060031;
+        public static final int tv_index=0x7f06000c;
+        public static final int tv_infoControl=0x7f060038;
+        public static final int tv_name=0x7f060042;
+        public static final int tv_recommend=0x7f060039;
+        public static final int tv_register=0x7f06001d;
+        public static final int tv_result=0x7f060013;
+        public static final int tv_schedule=0x7f060014;
+        public static final int tv_statistic=0x7f060028;
+        public static final int tv_statistics=0x7f06000e;
+        public static final int tv_status=0x7f060029;
+        public static final int tv_team1=0x7f06002c;
+        public static final int tv_team2=0x7f06002f;
+        public static final int tv_title=0x7f060051;
+        public static final int tv_wjmm=0x7f06001e;
+        public static final int v_ball=0x7f060010;
+        public static final int v_data=0x7f060018;
+        public static final int v_index=0x7f06000f;
+        public static final int v_infoControl=0x7f06003a;
+        public static final int v_recommend=0x7f06003b;
+        public static final int v_result=0x7f060016;
+        public static final int v_schedule=0x7f060017;
+        public static final int v_statistics=0x7f060011;
+        public static final int viewGroup=0x7f060054;
+        public static final int web_view_match_show_bigdata=0x7f060037;
         public static final int webview=0x7f060001;
-        public static final int x_lv=0x7f060018;
-        public static final int xlistview_footer_content=0x7f06003d;
-        public static final int xlistview_footer_hint_textview=0x7f06003e;
-        public static final int xlistview_footer_progressbar=0x7f06003f;
-        public static final int xlistview_header_arrow=0x7f060044;
-        public static final int xlistview_header_content=0x7f060040;
-        public static final int xlistview_header_hint_textview=0x7f060042;
-        public static final int xlistview_header_progressbar=0x7f060045;
-        public static final int xlistview_header_text=0x7f060041;
-        public static final int xlistview_header_time=0x7f060043;
-        public static final int yuce=0x7f060026;
-        public static final int yuce1=0x7f060027;
-        public static final int yuce2=0x7f060028;
+        public static final int x_lv=0x7f060025;
+        public static final int xlistview_footer_content=0x7f060055;
+        public static final int xlistview_footer_hint_textview=0x7f060056;
+        public static final int xlistview_footer_progressbar=0x7f060057;
+        public static final int xlistview_header_arrow=0x7f06005c;
+        public static final int xlistview_header_content=0x7f060058;
+        public static final int xlistview_header_hint_textview=0x7f06005a;
+        public static final int xlistview_header_progressbar=0x7f06005d;
+        public static final int xlistview_header_text=0x7f060059;
+        public static final int xlistview_header_time=0x7f06005b;
+        public static final int yuce=0x7f060034;
+        public static final int yuce1=0x7f060035;
+        public static final int yuce2=0x7f060036;
     }
     public static final class layout {
-        public static final int eventf=0x7f030000;
-        public static final int login=0x7f030001;
-        public static final int main=0x7f030002;
-        public static final int match1=0x7f030003;
-        public static final int match2=0x7f030004;
-        public static final int match_item=0x7f030005;
-        public static final int match_show_bigdata=0x7f030006;
-        public static final int matchf=0x7f030007;
-        public static final int myf=0x7f030008;
-        public static final int pull_to_refresh_header_horizontal=0x7f030009;
-        public static final int pull_to_refresh_header_vertical=0x7f03000a;
-        public static final int top_menu=0x7f03000b;
-        public static final int view_banner_content=0x7f03000c;
-        public static final int xlistview_footer=0x7f03000d;
-        public static final int xlistview_header=0x7f03000e;
+        public static final int analysis=0x7f030000;
+        public static final int event_data=0x7f030001;
+        public static final int event_f=0x7f030002;
+        public static final int event_result=0x7f030003;
+        public static final int event_schedule=0x7f030004;
+        public static final int eventf=0x7f030005;
+        public static final int login=0x7f030006;
+        public static final int main=0x7f030007;
+        public static final int match1=0x7f030008;
+        public static final int match2=0x7f030009;
+        public static final int match_item=0x7f03000a;
+        public static final int match_show_bigdata=0x7f03000b;
+        public static final int match_statistics=0x7f03000c;
+        public static final int matchf=0x7f03000d;
+        public static final int myf=0x7f03000e;
+        public static final int pull_to_refresh_header_horizontal=0x7f03000f;
+        public static final int pull_to_refresh_header_vertical=0x7f030010;
+        public static final int set=0x7f030011;
+        public static final int top_menu=0x7f030012;
+        public static final int view_banner_content=0x7f030013;
+        public static final int xlistview_footer=0x7f030014;
+        public static final int xlistview_header=0x7f030015;
     }
     public static final class string {
         public static final int app_name=0x7f070006;
+        public static final int event=0x7f07001b;
+        public static final int event_data=0x7f070017;
+        /**  赛事 
+         */
+        public static final int event_result=0x7f070015;
+        public static final int event_schedule=0x7f070016;
         public static final int generic_error=0x7f070009;
         public static final int generic_server_down=0x7f070008;
+        /**  标题 
+         */
+        public static final int match=0x7f07001a;
+        /**  首页 
+         */
+        public static final int match_analysis=0x7f070018;
+        public static final int match_ball=0x7f070011;
+        /**  分析工具 
+         */
+        public static final int match_index=0x7f070010;
+        public static final int match_statistic=0x7f070019;
+        public static final int match_statistics=0x7f070012;
+        public static final int my=0x7f07001c;
         /**  Volley error 
          */
         public static final int no_internet=0x7f070007;
@@ -837,6 +894,10 @@ or to a theme attribute in the form "<code>?[<i>package</i>:][<i>type</i>:]<i>na
         public static final int pull_to_refresh_pull_label=0x7f070000;
         public static final int pull_to_refresh_refreshing_label=0x7f070002;
         public static final int pull_to_refresh_release_label=0x7f070001;
+        /**  战绩统计 
+         */
+        public static final int statistics_infoContorl=0x7f070013;
+        public static final int statistics_recommend=0x7f070014;
         public static final int xlistview_footer_hint_normal=0x7f07000e;
         public static final int xlistview_footer_hint_ready=0x7f07000f;
         public static final int xlistview_header_hint_loading=0x7f07000c;

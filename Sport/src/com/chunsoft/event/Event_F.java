@@ -1,180 +1,189 @@
 package com.chunsoft.event;
 
-import java.text.SimpleDateFormat;
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.List;
-
-import android.app.ProgressDialog;
-import android.content.Context;
 import android.os.Bundle;
+import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentTransaction;
 import android.view.LayoutInflater;
 import android.view.View;
+import android.view.View.OnClickListener;
 import android.view.ViewGroup;
 import android.widget.TextView;
+import butterknife.Bind;
+import butterknife.ButterKnife;
 
-import com.android.volley.Request.Method;
-import com.android.volley.Response;
-import com.chunsoft.adapter.CommonAdapter;
-import com.chunsoft.adapter.ViewHolder;
-import com.chunsoft.bean.ImmediateBean;
-import com.chunsoft.bean.MatchesBean;
-import com.chunsoft.bean.VolleyDataCallback;
-import com.chunsoft.net.AbstractVolleyErrorListener;
-import com.chunsoft.net.Constant;
-import com.chunsoft.net.GsonRequest;
-import com.chunsoft.net.MyApplication;
 import com.chunsoft.sport.R;
-import com.chunsoft.utils.ToastUtil;
-import com.chunsoft.view.xListview.XListView;
-import com.chunsoft.view.xListview.XListView.IXListViewListener;
 
-public class Event_F extends Fragment implements IXListViewListener {
+public class Event_F extends Fragment implements OnClickListener {
 	/**
-	 * widget statement
+	 * widget statements
 	 */
-	private XListView lv;
-	private TextView tv_title;
-	ProgressDialog dialog = null;
+	@Bind(R.id.tv_title)
+	TextView tv_title;
+
+	@Bind(R.id.tv_result)
+	TextView tv_result;
+
+	@Bind(R.id.tv_schedule)
+	TextView tv_schedule;
+
+	@Bind(R.id.tv_data)
+	TextView tv_data;
+
+	@Bind(R.id.v_result)
+	View v_result;
+
+	@Bind(R.id.v_schedule)
+	View v_schedule;
+
+	@Bind(R.id.v_data)
+	View v_data;
 
 	/**
-	 * variable statement
+	 * variable statements
 	 */
-	private Context mContext;
-	private List<MatchesBean> datas = new ArrayList<MatchesBean>();
-	private MatchesBean bean;
-	private List<MatchesBean> matches = new ArrayList<MatchesBean>();
-	private EventAdapter adapter;
+	Event_Result event_Result;
+	Event_Schedule event_Schedule;
+	Event_Data event_Data;
 
 	@Override
-	public View onCreateView(LayoutInflater inflater, ViewGroup container,
-			Bundle savedInstanceState) {
-		View view = LayoutInflater.from(getActivity()).inflate(R.layout.eventf,
-				null);
-		FindView(view);
-		init();
+	public View onCreateView(LayoutInflater inflater,
+			@Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
+		View view = LayoutInflater.from(getActivity()).inflate(
+				R.layout.event_f, null);
+		ButterKnife.bind(this, view);
+		initView();
+		Click();
 		return view;
 	}
 
-	private void init() {
-		mContext = getActivity();
-		tv_title.setText("赛事");
-		lv.setXListViewListener(this);
-		// 设置可以进行下拉加载的功能
-		lv.setPullLoadEnable(true);
-		lv.setPullRefreshEnable(true);
-		getMatchesData(new VolleyDataCallback<ImmediateBean>() {
-			@Override
-			public void onSuccess(ImmediateBean datas) {
-				matches = new ArrayList<MatchesBean>();
-				matches = datas.matches;
-				adapter = new EventAdapter(getActivity().getApplication(),
-						matches, R.layout.match_item);
-				lv.setAdapter(adapter);
-				if (dialog != null && dialog.isShowing()) {
-					dialog.dismiss();
-					dialog = null;
-				}
-			}
-		});
-	}
-
-	private void FindView(View view) {
-		tv_title = (TextView) view.findViewById(R.id.tv_title);
-		lv = (XListView) view.findViewById(R.id.lv);
-	}
-
-	class EventAdapter extends CommonAdapter<MatchesBean> {
-
-		public EventAdapter(Context context, List<MatchesBean> datas,
-				int layoutId) {
-			super(context, datas, layoutId);
-		}
-
-		@Override
-		public void convert(ViewHolder holder, MatchesBean t) {
-			holder.setText(R.id.tv_status, t.status);
-			holder.setText(R.id.tv_cn_name, t.league.cn_name);
-			holder.setText(R.id.match_time, t.match_time);
-			holder.setText(R.id.tv_team1, t.team1.cn_name);
-			holder.setText(R.id.tv_team2, t.team2.cn_name);
-			holder.setText(R.id.tv_home_score, t.current_match.home_score);
-			holder.setText(R.id.tv_guest_score, t.current_match.guest_score);
-		}
-
-	}
-
 	@Override
-	public void onRefresh() {
-		datas.clear();
-		matches.clear();
-		getMatchesData(new VolleyDataCallback<ImmediateBean>() {
-			@Override
-			public void onSuccess(ImmediateBean datas) {
-				matches = new ArrayList<MatchesBean>();
-				matches = datas.matches;
-				adapter = new EventAdapter(getActivity().getApplication(),
-						matches, R.layout.match_item);
-				lv.setAdapter(adapter);
-
-				if (dialog != null && dialog.isShowing()) {
-					dialog.dismiss();
-					dialog = null;
-				}
+	public void onClick(View v) {
+		switch (v.getId()) {
+		case R.id.tv_result:
+			if (event_Result == null) {
+				event_Result = new Event_Result();
+				addFragment(event_Result);
+				showFragment(event_Result);
+			} else {
+				showFragment(event_Result);
 			}
-		});
-		// 停止刷新和加载
-		onLoad();
+			tv_result.setTextColor(getResources().getColor(R.color.text_click));
+			tv_schedule.setTextColor(getResources().getColor(
+					R.color.text_normal));
+			tv_data.setTextColor(getResources().getColor(R.color.text_normal));
+
+			v_result.setBackgroundColor(getResources().getColor(
+					R.color.text_click));
+			v_schedule.setBackgroundColor(getResources().getColor(
+					R.color.line_normal));
+			v_data.setBackgroundColor(getResources().getColor(
+					R.color.line_normal));
+
+			break;
+		case R.id.tv_schedule:
+			if (event_Schedule == null) {
+				event_Schedule = new Event_Schedule();
+				addFragment(event_Schedule);
+				showFragment(event_Schedule);
+			} else {
+				showFragment(event_Schedule);
+			}
+			tv_result
+					.setTextColor(getResources().getColor(R.color.text_normal));
+			tv_schedule.setTextColor(getResources()
+					.getColor(R.color.text_click));
+			tv_data.setTextColor(getResources().getColor(R.color.text_normal));
+
+			v_result.setBackgroundColor(getResources().getColor(
+					R.color.line_normal));
+			v_schedule.setBackgroundColor(getResources().getColor(
+					R.color.text_click));
+			v_data.setBackgroundColor(getResources().getColor(
+					R.color.line_normal));
+			break;
+		case R.id.tv_data:
+			if (event_Data == null) {
+				event_Data = new Event_Data();
+				addFragment(event_Data);
+				showFragment(event_Data);
+			} else {
+				showFragment(event_Data);
+			}
+			tv_result
+					.setTextColor(getResources().getColor(R.color.text_normal));
+			tv_schedule.setTextColor(getResources().getColor(
+					R.color.text_normal));
+			tv_data.setTextColor(getResources().getColor(R.color.text_click));
+
+			v_result.setBackgroundColor(getResources().getColor(
+					R.color.line_normal));
+			v_schedule.setBackgroundColor(getResources().getColor(
+					R.color.line_normal));
+			v_data.setBackgroundColor(getResources().getColor(
+					R.color.text_click));
+			break;
+
+		default:
+			break;
+		}
 	}
 
-	@Override
-	public void onLoadMore() {
-		ToastUtil.showLongToast(getActivity().getApplication(), "没有更多数据");
-		onLoad();
+	private void Click() {
+		tv_result.setOnClickListener(this);
+		tv_schedule.setOnClickListener(this);
+		tv_data.setOnClickListener(this);
 	}
 
-	/** 停止加载和刷新 */
-	private void onLoad() {
-		lv.stopRefresh();
-		// 停止加载更多
-		lv.stopLoadMore();
-		// 设置最后一次刷新时间
-		lv.setRefreshTime(getCurrentTime(System.currentTimeMillis()));
-	}
-
-	/** 简单的时间格式 */
-	public static SimpleDateFormat mDateFormat = new SimpleDateFormat(
-			"MM-dd HH:mm");
-
-	public static String getCurrentTime(long time) {
-		if (0 == time) {
-			return "";
+	private void initView() { // 设置默认界面
+		tv_title.setText(getResources().getText(R.string.event));
+		if (event_Result == null) {
+			event_Result = new Event_Result();
+			addFragment(event_Result);
+			showFragment(event_Result);
+		} else {
+			if (event_Result.isHidden()) {
+				showFragment(event_Result);
+			}
 		}
 
-		return mDateFormat.format(new Date(time));
 	}
 
-	private void getMatchesData(final VolleyDataCallback<ImmediateBean> callback) {
-		String URL = Constant.IP + Constant.IMMEDIATE;
-		if (dialog == null) {
-			dialog = ProgressDialog.show(mContext, "", "正在加载...");
-			dialog.show();
+	/** 添加Fragment **/
+	public void addFragment(Fragment fragment) {
+		FragmentTransaction ft = getActivity().getSupportFragmentManager()
+				.beginTransaction();
+		ft.add(R.id.show_view, fragment);
+		ft.commit();
+	}
+
+	/** 删除Fragment **/
+	public void removeFragment(Fragment fragment) {
+		FragmentTransaction ft = getActivity().getSupportFragmentManager()
+				.beginTransaction();
+		ft.remove(fragment);
+		ft.commit();
+	}
+
+	/** 显示Fragment **/
+	public void showFragment(Fragment fragment) {
+		FragmentTransaction ft = getActivity().getSupportFragmentManager()
+				.beginTransaction();
+		// 设置Fragment的切换动画
+		ft.setCustomAnimations(R.anim.cu_push_right_in, R.anim.cu_push_left_out);
+
+		// 判断页面是否已经创建，如果已经创建，那么就隐藏掉
+		if (event_Result != null) {
+			ft.hide(event_Result);
 		}
-		GsonRequest<ImmediateBean> request = new GsonRequest<>(Method.GET, URL,
-				"", new Response.Listener<ImmediateBean>() {
-					@Override
-					public void onResponse(ImmediateBean arg0) {
-						callback.onSuccess(arg0);
-					}
+		if (event_Schedule != null) {
+			ft.hide(event_Schedule);
+		}
+		if (event_Data != null) {
+			ft.hide(event_Data);
+		}
+		ft.show(fragment);
+		ft.commitAllowingStateLoss();
 
-				}, new AbstractVolleyErrorListener(mContext) {
-					@Override
-					public void onError() {
-
-					}
-
-				}, ImmediateBean.class);
-		MyApplication.getInstance().addToRequestQueue(request);
 	}
 }
