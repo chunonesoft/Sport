@@ -9,6 +9,9 @@
 
     <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
+    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
+    <uses-permission android:name="android.permission.ACCESS_WIFI_STATE" />
+    
     <application
         android:name="com.chunsoft.net.MyApplication"
         android:allowBackup="true"
@@ -31,6 +34,9 @@
         <activity android:name="com.chunsoft.my.Set_A"/>
         <activity android:name="com.chunsoft.match.Analysis_A"></activity>
         <activity android:name="com.chunsoft.match.Match_Statistics_A"></activity>
+        <activity android:name="com.chunsoft.my.Focus_A"></activity>
+        <activity android:name="com.chunsoft.my.Register_A"></activity>
+        <activity android:name="com.chunsoft.my.Forget_Pwd_A"></activity>
         <service
             android:name="com.chunsoft.service.MatchRecommentNotifyService"
             android:enabled="true"

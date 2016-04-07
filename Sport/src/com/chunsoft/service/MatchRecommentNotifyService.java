@@ -15,12 +15,14 @@ import android.content.SharedPreferences;
 import android.media.RingtoneManager;
 import android.net.Uri;
 import android.os.IBinder;
+import android.util.Log;
 
 import com.chunsoft.bean.MatchRecommend;
 import com.chunsoft.match.MatchImmediateShowActivity;
 import com.chunsoft.net.Constant;
 import com.chunsoft.net.GetJsonData;
 import com.chunsoft.sport.R;
+import com.chunsoft.utils.PreferencesUtils;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 
@@ -50,14 +52,16 @@ public class MatchRecommentNotifyService extends IntentService {
 
 	@Override
 	protected void onHandleIntent(Intent intent) {
-		mPrefs = getSharedPreferences("com.yinglang.sport", 0);
-		String lastRecommendDataTime = mPrefs.getString(
-				"last_match_recommends_data_time", "2016-02-01 00:00");
-		String lastRecommendDataTime1 = lastRecommendDataTime;
-		String lastRecommendDataTime2 = lastRecommendDataTime;
-		lastRecommendDataTime = lastRecommendDataTime1.substring(0, 10) + "%20"
-				+ lastRecommendDataTime2.substring(12, 16);
-		// Log.e("-------1111", lastRecommendDataTime);
+		String lastRecommendDataTime = PreferencesUtils.getSharePreStr(this,
+				"lastRecommendDataTime", "2016-02-01 00:00");
+		if (lastRecommendDataTime.contains(" ")) {
+			String lastRecommendDataTime1 = lastRecommendDataTime;
+			String lastRecommendDataTime2 = lastRecommendDataTime;
+			lastRecommendDataTime = lastRecommendDataTime1.substring(0, 10)
+					+ "%20" + lastRecommendDataTime2.substring(11, 16);
+			Log.e("-------lastRecommendDataTime拼接字符串", lastRecommendDataTime);
+		}
+		Log.e("-------lastRecommendDataTime", lastRecommendDataTime);
 		Gson gson = new Gson();
 		// Log.e("--------", getMatchRecommend("2016-03-31").toString());
 		List<MatchRecommend> recommends = new ArrayList<MatchRecommend>();
@@ -90,11 +94,8 @@ public class MatchRecommentNotifyService extends IntentService {
 		if (recommends.size() > 0) {
 			lastRecommendDataTime = recommends.get(0).getData_time().toString();
 		}
-
-		SharedPreferences.Editor editor = mPrefs.edit();
-		editor.putString("last_match_recommends_data_time",
+		PreferencesUtils.putSharePre(this, "lastRecommendDataTime",
 				lastRecommendDataTime);
-		editor.commit();
 	}
 
 	private JSONArray getMatchRecommend(String data_time) {

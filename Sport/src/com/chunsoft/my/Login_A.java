@@ -109,7 +109,7 @@ public class Login_A extends Activity implements OnClickListener {
 				PreferencesUtils.putSharePre(mContext, "userName", "chunsoft");
 				PreferencesUtils.putSharePre(mContext, "phone", "18868448198");
 				PreferencesUtils.putSharePre(mContext, "password", "12345678");
-				PreferencesUtils.putSharePre(mContext, "id", "10022");
+				PreferencesUtils.putSharePre(mContext, "id", 10022);
 				IntentUti.IntentTo(mContext, Main_FA.class);
 				// sendData = new JSONObject();
 				// try {
@@ -144,10 +144,10 @@ public class Login_A extends Activity implements OnClickListener {
 			}
 			break;
 		case R.id.tv_register:
-
+			IntentUti.IntentTo(mContext, Register_A.class);
 			break;
 		case R.id.tv_wjmm:
-
+			IntentUti.IntentTo(mContext, Forget_Pwd_A.class);
 			break;
 		default:
 			break;

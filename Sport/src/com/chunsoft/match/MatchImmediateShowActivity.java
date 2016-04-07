@@ -6,13 +6,16 @@ import android.os.Bundle;
 import android.util.Log;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
+import butterknife.Bind;
+import butterknife.ButterKnife;
 
 import com.chunsoft.net.Constant;
 import com.chunsoft.sport.R;
 import com.chunsoft.view.WebviewBridge;
 
 public class MatchImmediateShowActivity extends Activity {
-	private WebView mWebView;
+	@Bind(R.id.web_view_match_show_bigdata)
+	WebView mWebView;
 	private int matchID = -1;
 	WebviewBridge mWebviewBridge;
 
@@ -23,6 +26,7 @@ public class MatchImmediateShowActivity extends Activity {
 		if (getIntent() != null && getIntent().getExtras() != null) {
 			matchID = getIntent().getExtras().getInt("match_id");
 		}
+		ButterKnife.bind(this);
 		init();
 	}
 
@@ -37,10 +41,6 @@ public class MatchImmediateShowActivity extends Activity {
 	private void init() {
 		String URL = Constant.IP + "matches/" + matchID;
 		Log.e("URL--------------------", URL);
-		mWebView.getSettings().setJavaScriptEnabled(true);
-		mWebviewBridge = new WebviewBridge(this);
-		mWebView.addJavascriptInterface(mWebviewBridge, "Android");
-		mWebView.loadUrl(URL);
 		mWebView.setWebViewClient(new WebViewClient() {
 			@Override
 			public boolean shouldOverrideUrlLoading(WebView view, String url) {
@@ -48,6 +48,9 @@ public class MatchImmediateShowActivity extends Activity {
 				return true;
 			}
 		});
-
+		mWebView.getSettings().setJavaScriptEnabled(true);
+		mWebviewBridge = new WebviewBridge(this);
+		mWebView.addJavascriptInterface(mWebviewBridge, "Android");
+		mWebView.loadUrl(URL);
 	}
 }

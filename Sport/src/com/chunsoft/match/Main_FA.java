@@ -102,8 +102,9 @@ public class Main_FA extends FragmentActivity implements OnClickListener {
 			}
 			break;
 		case R.id.iv_menu_2:
-			String phone = PreferencesUtils.getSharePreStr(mContext, "phone");
-			if (!phone.equals("18868448198")) {
+			String phone = PreferencesUtils.getSharePreStr(mContext, "phone",
+					"");
+			if (phone.equals("")) {
 				IntentUti.IntentTo(mContext, Login_A.class);
 			} else {
 				if (my_F == null) {

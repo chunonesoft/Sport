@@ -167,7 +167,10 @@ public class Event_Result extends Fragment implements IXListViewListener {
 				}, new AbstractVolleyErrorListener(mContext) {
 					@Override
 					public void onError() {
-
+						if (dialog != null && dialog.isShowing()) {
+							dialog.dismiss();
+							dialog = null;
+						}
 					}
 
 				}, ImmediateBean.class);

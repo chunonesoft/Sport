@@ -8,4 +8,5 @@ public class Constant {
 	public static String REGISTER = "users.json";
 	public static String MATCH_RECOMMENDS = "match_recommands.json";
 	public static String EVENTS = "my_favorites/{user_id}/events.json";
+	public static String RECOMMEND_RESULT = "match_recommands/report";
 }

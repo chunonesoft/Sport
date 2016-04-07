@@ -136,7 +136,7 @@ public class Event_F extends Fragment implements OnClickListener {
 	}
 
 	private void initView() { // 设置默认界面
-		tv_title.setText(getResources().getText(R.string.event));
+		tv_title.setText(getResources().getText(R.string.statistic));
 		if (event_Result == null) {
 			event_Result = new Event_Result();
 			addFragment(event_Result);

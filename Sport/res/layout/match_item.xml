@@ -131,13 +131,13 @@
             android:layout_marginLeft="20dp"
             android:gravity="left"
             />
-        <ImageView
+        <!-- <ImageView
             android:id="@+id/iv_big_data"
            android:layout_width="wrap_content"
            android:layout_height="wrap_content"
            android:background="@drawable/bigdata" 
            android:layout_marginRight="20dp"
-            />
+            /> -->
     </LinearLayout>
     <RelativeLayout
         android:layout_width="match_parent"
@@ -170,6 +170,7 @@
             android:background="@drawable/yuce2"
             />
         <ImageView 
+            android:id="@+id/iv_guess"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginLeft="20dp"

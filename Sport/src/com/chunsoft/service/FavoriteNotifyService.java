@@ -11,21 +11,20 @@ import android.app.NotificationManager;
 import android.app.PendingIntent;
 import android.content.Context;
 import android.content.Intent;
-import android.content.SharedPreferences;
 import android.media.RingtoneManager;
 import android.net.Uri;
 import android.util.Log;
 
 import com.chunsoft.bean.MatchEvent;
-import com.chunsoft.match.Main_FA;
+import com.chunsoft.match.MatchImmediateShowActivity;
 import com.chunsoft.net.GetJsonData;
 import com.chunsoft.sport.R;
+import com.chunsoft.utils.PreferencesUtils;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 
 public class FavoriteNotifyService extends IntentService {
 	NotificationManager mNotificationManager;
-	SharedPreferences mPrefs;
 	JSONArray returnData;
 
 	public FavoriteNotifyService() {
@@ -34,33 +33,35 @@ public class FavoriteNotifyService extends IntentService {
 
 	@Override
 	protected void onHandleIntent(Intent intent) {
-		Log.d("FavoriteNofifyService exec", "hello");
-		mPrefs = getSharedPreferences("com.yinglang.sport", 0);
-		String lastEventDataTime = mPrefs.getString("last_event_data_time",
-				"2016-02-01 00:00");
-		String lastEventDataTime1 = lastEventDataTime;
-		String lastEventDataTime2 = lastEventDataTime;
-		lastEventDataTime = lastEventDataTime1.substring(0, 10) + "%20"
-				+ lastEventDataTime2.substring(12, 16);
-		// Log.e("lastEventDataTime--------", lastEventDataTime);
-		int userId = mPrefs.getInt("user_id", 10022);
-		// Log.e("user_id--------", userId + "");
+		String lastEventDataTime = PreferencesUtils.getSharePreStr(this,
+				"lastEventDataTime", "2016-02-01 00:00");
+		Log.e("---------lastEventDataTime", "000" + lastEventDataTime);
+		if (lastEventDataTime.contains(" ")) {
+			String lastEventDataTime1 = lastEventDataTime;
+			String lastEventDataTime2 = lastEventDataTime;
+			lastEventDataTime = lastEventDataTime1.substring(0, 10) + "%20"
+					+ lastEventDataTime2.substring(11, 16);
+			Log.e("lastEventDataTime--------", "字符串拼接" + lastEventDataTime);
+		}
+
+		Log.e("lastEventDataTime--------", "1" + lastEventDataTime);
+		int userId = PreferencesUtils.getSharePreInt(this, "id", 10022);
+		Log.e("userId----------------", userId + "");
 		try {
 			Gson gson = new Gson();
 			// Log.e("--------getMatchEventRecommend1",
 			// getMatchEventRecommend(userId, "2016-03-01").toString());
 			List<MatchEvent> recommends = new ArrayList<MatchEvent>();
 			recommends = gson.fromJson(
-					getMatchEventRecommend(userId, "2016-03-01").toString(),
-					new TypeToken<List<MatchEvent>>() {
+					getMatchEventRecommend(userId, lastEventDataTime)
+							.toString(), new TypeToken<List<MatchEvent>>() {
 					}.getType());
-			// Log.e("--------getMatchEventRecommend2",
-			// getMatchEventRecommend(userId, "2016-03-01").toString());
 
 			// 第一次不提示
-			if (!lastEventDataTime.equals("2016-02-01%2000:01")) {
+			if (!lastEventDataTime.equals("2016-02-01%2000:00")) {
 				for (MatchEvent evt : recommends) {
-					Intent matchShowIntent = new Intent(this, Main_FA.class);
+					Intent matchShowIntent = new Intent(this,
+							MatchImmediateShowActivity.class);
 					matchShowIntent.putExtra("match_id", evt.getMatch_id());
 					PendingIntent pendingIntent = PendingIntent.getActivity(
 							this, evt.getMatch_id(), matchShowIntent, 0);
@@ -88,15 +89,13 @@ public class FavoriteNotifyService extends IntentService {
 				lastEventDataTime = recommends.get(0).getData_time();
 			}
 
-			SharedPreferences.Editor editor = mPrefs.edit();
-			editor.putString("last_event_data_time", lastEventDataTime);
-			editor.commit();
+			PreferencesUtils.putSharePre(this, "lastEventDataTime",
+					lastEventDataTime);
 
 		} catch (Exception ex) {
 			Log.e("FavoriteNotidyService Error:" + ex.getMessage(),
 					"-----------");
 		}
-
 	}
 
 	private JSONArray getMatchEventRecommend(int userId, String data_time) {
@@ -107,5 +106,4 @@ public class FavoriteNotifyService extends IntentService {
 		returnData = new GetJsonData().getJSONArrayDataHGET(URL);
 		return returnData;
 	}
-
 }

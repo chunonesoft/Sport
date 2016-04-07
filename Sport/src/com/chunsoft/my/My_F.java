@@ -62,6 +62,7 @@ public class My_F extends Fragment implements OnClickListener {
 			IntentUti.IntentTo(getActivity(), Set_A.class);
 			break;
 		case R.id.ll_focus:
+			IntentUti.IntentTo(getActivity(), Focus_A.class);
 			break;
 		default:
 			break;
