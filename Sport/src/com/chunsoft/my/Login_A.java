@@ -1,5 +1,7 @@
 package com.chunsoft.my;
 
+import java.net.URLEncoder;
+
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -88,11 +90,11 @@ public class Login_A extends Activity implements OnClickListener {
 	public void onClick(View v) {
 		switch (v.getId()) {
 		case R.id.btn_login:
-			URL = Constant.LOGIN;
+			URL = Constant.IP + Constant.LOGIN;
 			boolean flag1 = false;
 			boolean flag2 = false;
-			mobile = et_mobile.getText().toString();
-			password = et_password.getText().toString();
+			mobile = et_mobile.getText().toString().trim();
+			password = et_password.getText().toString().trim();
 
 			if (!password.equals("")) {
 				flag1 = true;
@@ -110,37 +112,29 @@ public class Login_A extends Activity implements OnClickListener {
 				PreferencesUtils.putSharePre(mContext, "phone", "18868448198");
 				PreferencesUtils.putSharePre(mContext, "password", "12345678");
 				PreferencesUtils.putSharePre(mContext, "id", 10022);
-				IntentUti.IntentTo(mContext, Main_FA.class);
-				// sendData = new JSONObject();
-				// try {
-				// sendData.put("user[login]", mobile);
-				// sendData.put("user[password]", password);
-				// } catch (JSONException e) {
-				// // TODO Auto-generated catch block
-				// e.printStackTrace();
-				// }
+				// IntentUti.IntentTo(mContext, Main_FA.class);
+				sendData = new JSONObject();
+				try {
+					sendData.put("user%5Blogin%5D", mobile);
+					sendData.put("user%5Bpassword%5D", password);
+				} catch (JSONException e) {
+					e.printStackTrace();
+				}
 				// new getData().execute("");
-				//
-				// getJSONRequest(mobile, password,
-				// new VolleyDataCallback<LoginBean>() {
-				// @Override
-				// public void onSuccess(LoginBean datas) {
-				// if (!datas.phone.equals("")) {
-				// PreferencesUtils.putSharePre(mContext,
-				// "userName", datas.userName);
-				// PreferencesUtils.putSharePre(mContext,
-				// "phone", datas.phone);
-				// PreferencesUtils.putSharePre(mContext,
-				// "password", datas.password);
-				// PreferencesUtils.putSharePre(mContext,
-				// "id", datas.id);
-				// } else {
-				// ToastUtil.showShortToast(mContext,
-				// "用户登录失败，请检查用户名和密码！");
-				// }
-				// loadDialog.cancel();
-				// }
-				// });
+				Log.e("------sendData", sendData.toString());
+				getJSONRequest(mobile, password,
+						new VolleyDataCallback<LoginBean>() {
+							@Override
+							public void onSuccess(LoginBean datas) {
+								if (datas.phone.equals("18868448198")) {
+									IntentUti.IntentTo(mContext, Main_FA.class);
+								} else {
+									ToastUtil.showShortToast(mContext,
+											"用户登录失败，请检查用户名和密码！");
+								}
+								loadDialog.cancel();
+							}
+						});
 			}
 			break;
 		case R.id.tv_register:
@@ -162,18 +156,18 @@ public class Login_A extends Activity implements OnClickListener {
 		try {
 			sendData.put("user[login]", mobile);
 			sendData.put("user[password]", password);
-			Log.e("sendData", sendData.toString());
-
 		} catch (JSONException e) {
 			e.printStackTrace();
 		}
+		Log.e("URLEncoder.encode(sendData.toString())",
+				URLEncoder.encode(sendData.toString()));
 		GsonRequest<LoginBean> request = new GsonRequest<LoginBean>(URL,
-				sendData.toString(), new Response.Listener<LoginBean>() {
+				URLEncoder.encode(sendData.toString()),
+				new Response.Listener<LoginBean>() {
 
 					@Override
 					public void onResponse(LoginBean arg0) {
-						returnData = arg0;
-						callback.onSuccess(returnData);
+						callback.onSuccess(arg0);
 					}
 				}, new AbstractVolleyErrorListener(mContext) {
 					@Override
@@ -212,6 +206,7 @@ public class Login_A extends Activity implements OnClickListener {
 		@Override
 		protected String doInBackground(String... params) {
 			sendData = new JSONObject();
+			URL = Constant.LOGIN;
 			try {
 				sendData.put("user[login]", "chunsoft");
 				sendData.put("user[password]", "12345678");

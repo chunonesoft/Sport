@@ -38,5 +38,5 @@
     <string name="register">注册</string>
     <string name="forget_pwd">忘记密码</string>
     <string name="statistic">战绩统计</string>
-    
+    <string name="match_detail">比赛详情</string>
 </resources>

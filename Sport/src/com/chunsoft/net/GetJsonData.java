@@ -13,6 +13,7 @@ import org.apache.http.client.methods.HttpGet;
 import org.apache.http.client.methods.HttpPost;
 import org.apache.http.entity.StringEntity;
 import org.apache.http.impl.client.DefaultHttpClient;
+import org.apache.http.protocol.HTTP;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -35,9 +36,9 @@ public class GetJsonData {
 		httpClient = new DefaultHttpClient();
 		httpPost = new HttpPost(URL);
 		httpPost.addHeader("Content-Type", "application/json");
+		httpPost.addHeader("charset", HTTP.UTF_8);
 		try {
-			httpPost.setEntity(new StringEntity(sendData.toString()));
-
+			httpPost.setEntity(new StringEntity(sendData.toString(), HTTP.UTF_8));
 			response = httpClient.execute(httpPost);
 			httpEntity = response.getEntity();
 			br = new BufferedReader(new InputStreamReader(

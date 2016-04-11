@@ -6,6 +6,7 @@ import android.os.Bundle;
 import android.util.Log;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
+import android.widget.TextView;
 import butterknife.Bind;
 import butterknife.ButterKnife;
 
@@ -16,6 +17,8 @@ import com.chunsoft.view.WebviewBridge;
 public class MatchImmediateShowActivity extends Activity {
 	@Bind(R.id.web_view_match_show_bigdata)
 	WebView mWebView;
+	@Bind(R.id.tv_title)
+	TextView tv_title;
 	private int matchID = -1;
 	WebviewBridge mWebviewBridge;
 
@@ -32,6 +35,7 @@ public class MatchImmediateShowActivity extends Activity {
 
 	@Override
 	protected void onNewIntent(Intent intent) {
+		tv_title.setText(getResources().getText(R.string.match_detail));
 		if (intent.getExtras().containsKey("match_id")) {
 			matchID = intent.getIntExtra("match_id", -1);
 		}

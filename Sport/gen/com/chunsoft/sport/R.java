@@ -849,32 +849,35 @@ or to a theme attribute in the form "<code>?[<i>package</i>:][<i>type</i>:]<i>na
     }
     public static final class layout {
         public static final int analysis=0x7f030000;
-        public static final int event_data=0x7f030001;
-        public static final int event_f=0x7f030002;
-        public static final int event_result=0x7f030003;
-        public static final int event_schedule=0x7f030004;
-        public static final int eventf=0x7f030005;
-        public static final int focus=0x7f030006;
-        public static final int login=0x7f030007;
-        public static final int main=0x7f030008;
-        public static final int match1=0x7f030009;
-        public static final int match2=0x7f03000a;
-        public static final int match_info=0x7f03000b;
-        public static final int match_item=0x7f03000c;
-        public static final int match_recommend=0x7f03000d;
-        public static final int match_show_bigdata=0x7f03000e;
-        public static final int match_statistics=0x7f03000f;
-        public static final int matchf=0x7f030010;
-        public static final int myf=0x7f030011;
-        public static final int pull_to_refresh_header_horizontal=0x7f030012;
-        public static final int pull_to_refresh_header_vertical=0x7f030013;
-        public static final int register=0x7f030014;
-        public static final int set=0x7f030015;
-        public static final int top_menu=0x7f030016;
-        public static final int view_banner_content=0x7f030017;
-        public static final int wjmm=0x7f030018;
-        public static final int xlistview_footer=0x7f030019;
-        public static final int xlistview_header=0x7f03001a;
+        public static final int analysis_ball=0x7f030001;
+        public static final int analysis_index=0x7f030002;
+        public static final int analysis_statistics=0x7f030003;
+        public static final int event_data=0x7f030004;
+        public static final int event_f=0x7f030005;
+        public static final int event_result=0x7f030006;
+        public static final int event_schedule=0x7f030007;
+        public static final int eventf=0x7f030008;
+        public static final int focus=0x7f030009;
+        public static final int login=0x7f03000a;
+        public static final int main=0x7f03000b;
+        public static final int match1=0x7f03000c;
+        public static final int match2=0x7f03000d;
+        public static final int match_info=0x7f03000e;
+        public static final int match_item=0x7f03000f;
+        public static final int match_recommend=0x7f030010;
+        public static final int match_show_bigdata=0x7f030011;
+        public static final int match_statistics=0x7f030012;
+        public static final int matchf=0x7f030013;
+        public static final int myf=0x7f030014;
+        public static final int pull_to_refresh_header_horizontal=0x7f030015;
+        public static final int pull_to_refresh_header_vertical=0x7f030016;
+        public static final int register=0x7f030017;
+        public static final int set=0x7f030018;
+        public static final int top_menu=0x7f030019;
+        public static final int view_banner_content=0x7f03001a;
+        public static final int wjmm=0x7f03001b;
+        public static final int xlistview_footer=0x7f03001c;
+        public static final int xlistview_header=0x7f03001d;
     }
     public static final class string {
         public static final int app_name=0x7f070006;
@@ -895,6 +898,7 @@ or to a theme attribute in the form "<code>?[<i>package</i>:][<i>type</i>:]<i>na
          */
         public static final int match_analysis=0x7f070018;
         public static final int match_ball=0x7f070011;
+        public static final int match_detail=0x7f070021;
         /**  分析工具 
          */
         public static final int match_index=0x7f070010;

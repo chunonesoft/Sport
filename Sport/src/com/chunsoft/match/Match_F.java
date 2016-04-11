@@ -9,6 +9,7 @@ import android.app.ProgressDialog;
 import android.content.Context;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
@@ -184,6 +185,8 @@ public class Match_F extends Fragment implements IXListViewListener,
 
 		@Override
 		public void convert(ViewHolder holder, MatchesBean t) {
+			Log.e("比赛ID------------", t.match_id);
+			Log.e("比赛名称--------", t.team1.cn_name + ":" + t.team2.cn_name);
 			holder.setText(R.id.tv_status, t.status);
 			holder.setText(R.id.tv_cn_name, t.league.cn_name);
 			holder.setText(R.id.match_time, t.match_time);
@@ -222,6 +225,7 @@ public class Match_F extends Fragment implements IXListViewListener,
 	@Override
 	public void onLoadMore() {
 		ToastUtil.showLongToast(getActivity().getApplication(), "没有更多数据");
+		onLoad();
 	}
 
 	/** 停止加载和刷新 */
