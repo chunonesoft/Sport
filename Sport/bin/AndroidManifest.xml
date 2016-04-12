@@ -37,15 +37,17 @@
         <activity android:name="com.chunsoft.my.Focus_A"></activity>
         <activity android:name="com.chunsoft.my.Register_A"></activity>
         <activity android:name="com.chunsoft.my.Forget_Pwd_A"></activity>
+        <activity android:name="com.chunsoft.match.Match_ShowBigdata_A"></activity>
         <service
             android:name="com.chunsoft.service.MatchRecommentNotifyService"
             android:enabled="true"
             android:exported="false"/>
+        <!--
         <service
             android:name="com.chunsoft.service.FavoriteNotifyService"
             android:enabled="true"
             android:exported="false" />
-
+		-->
     </application>
 
 </manifest>

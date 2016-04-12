@@ -4,6 +4,7 @@ import android.app.Activity;
 import android.os.Bundle;
 import android.widget.TextView;
 import butterknife.Bind;
+import butterknife.ButterKnife;
 
 import com.chunsoft.sport.R;
 
@@ -15,6 +16,7 @@ public class Forget_Pwd_A extends Activity {
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.wjmm);
+		ButterKnife.bind(this);
 		init();
 	}
 

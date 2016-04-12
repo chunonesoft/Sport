@@ -39,4 +39,8 @@
     <string name="forget_pwd">忘记密码</string>
     <string name="statistic">战绩统计</string>
     <string name="match_detail">比赛详情</string>
+    <string name="login">登陆</string>
+    
+    <!-- 通知栏 -->
+    <string name="app_awesome_name">为您分享最专业的数据推荐</string>
 </resources>

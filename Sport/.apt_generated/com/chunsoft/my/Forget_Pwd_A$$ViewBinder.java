@@ -8,8 +8,8 @@ import butterknife.ButterKnife.ViewBinder;
 public class Forget_Pwd_A$$ViewBinder<T extends com.chunsoft.my.Forget_Pwd_A> implements ViewBinder<T> {
   @Override public void bind(final Finder finder, final T target, Object source) {
     View view;
-    view = finder.findRequiredView(source, 2131099740, "field 'tv_title'");
-    target.tv_title = finder.castView(view, 2131099740, "field 'tv_title'");
+    view = finder.findRequiredView(source, 2131099741, "field 'tv_title'");
+    target.tv_title = finder.castView(view, 2131099741, "field 'tv_title'");
   }
 
   @Override public void unbind(T target) {

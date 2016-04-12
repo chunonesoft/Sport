@@ -9,7 +9,6 @@ import android.app.Activity;
 import android.app.ProgressDialog;
 import android.content.Context;
 import android.os.Bundle;
-import android.view.View;
 import android.widget.TextView;
 import butterknife.Bind;
 import butterknife.ButterKnife;
@@ -92,7 +91,6 @@ public class Focus_A extends Activity implements IXListViewListener {
 
 		@Override
 		public void convert(ViewHolder holder, MatchesBean t) {
-			holder.getView(R.id.iv_guess).setVisibility(View.INVISIBLE);
 			holder.setText(R.id.tv_status, t.status);
 			holder.setText(R.id.tv_cn_name, t.league.cn_name);
 			holder.setText(R.id.match_time, t.match_time);

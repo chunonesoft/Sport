@@ -3,6 +3,8 @@ package com.chunsoft.match;
 import java.util.Calendar;
 
 import android.app.AlarmManager;
+import android.app.Notification;
+import android.app.NotificationManager;
 import android.app.PendingIntent;
 import android.content.Context;
 import android.content.Intent;
@@ -17,7 +19,6 @@ import android.widget.ImageView;
 import com.chunsoft.event.Event_F;
 import com.chunsoft.my.Login_A;
 import com.chunsoft.my.My_F;
-import com.chunsoft.service.FavoriteNotifyService;
 import com.chunsoft.service.MatchRecommentNotifyService;
 import com.chunsoft.sport.R;
 import com.chunsoft.utils.IntentUti;
@@ -26,7 +27,7 @@ import com.chunsoft.utils.PreferencesUtils;
 public class Main_FA extends FragmentActivity implements OnClickListener {
 	/** widget statement */
 	private ImageView[] btn_menu = new ImageView[3];
-
+	NotificationManager mNotificationManager;
 	/** resources statement */
 	int menu_id[] = { R.id.iv_menu_0, R.id.iv_menu_1, R.id.iv_menu_2 };
 	int selectOn[] = { R.drawable.guide_home_on, R.drawable.guide_tfaccount_on,
@@ -48,7 +49,8 @@ public class Main_FA extends FragmentActivity implements OnClickListener {
 		super.onCreate(arg0);
 		setContentView(R.layout.main);
 		initView();
-		startFavoriteRecommendService();
+		displayNotifyIcon();
+		// startFavoriteRecommendService();
 		startMatchRecommendService();
 	}
 
@@ -166,6 +168,7 @@ public class Main_FA extends FragmentActivity implements OnClickListener {
 	}
 
 	private void startMatchRecommendService() {
+
 		Intent intent = new Intent(this, MatchRecommentNotifyService.class);
 		// 设置定时查询
 		PendingIntent pendingIntent = PendingIntent.getService(this, 0, intent,
@@ -179,17 +182,32 @@ public class Main_FA extends FragmentActivity implements OnClickListener {
 				calendar.getTimeInMillis(), frequency, pendingIntent);
 	}
 
-	private void startFavoriteRecommendService() {
-		Intent intent = new Intent(this, FavoriteNotifyService.class);
-		// 设置定时查询
-		PendingIntent pendingIntent = PendingIntent.getService(this, 0, intent,
-				0);
-		Calendar calendar = Calendar.getInstance();
-		calendar.setTimeInMillis(System.currentTimeMillis());
-		calendar.add(Calendar.SECOND, 10);
-		long frequency = 120 * 1000; // 2分钟检查一次
-		alarmManager = (AlarmManager) getSystemService(ALARM_SERVICE);
-		alarmManager.setRepeating(AlarmManager.RTC_WAKEUP,
-				calendar.getTimeInMillis(), frequency, pendingIntent);
+	// private void startFavoriteRecommendService() {
+	// Intent intent = new Intent(this, FavoriteNotifyService.class);
+	// // 设置定时查询
+	// PendingIntent pendingIntent = PendingIntent.getService(this, 0, intent,
+	// 0);
+	// Calendar calendar = Calendar.getInstance();
+	// calendar.setTimeInMillis(System.currentTimeMillis());
+	// calendar.add(Calendar.SECOND, 10);
+	// long frequency = 120 * 1000; // 2分钟检查一次
+	// alarmManager = (AlarmManager) getSystemService(ALARM_SERVICE);
+	// alarmManager.setRepeating(AlarmManager.RTC_WAKEUP,
+	// calendar.getTimeInMillis(), frequency, pendingIntent);
+	// }
+	private void displayNotifyIcon() {
+		Intent mainIntent = new Intent(this, Main_FA.class);
+
+		PendingIntent pendingIntent = PendingIntent.getActivity(this, 0,
+				mainIntent, 0);
+
+		Notification noti = new Notification.Builder(this)
+				.setContentTitle(getString(R.string.app_name))
+				.setContentText(getString(R.string.app_awesome_name))
+				.setContentIntent(pendingIntent).setSmallIcon(R.drawable.logo)
+				.build();
+		noti.flags = Notification.FLAG_NO_CLEAR;
+		mNotificationManager = (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
+		mNotificationManager.notify(-1, noti);
 	}
 }

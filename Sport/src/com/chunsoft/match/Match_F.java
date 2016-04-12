@@ -7,6 +7,7 @@ import java.util.List;
 
 import android.app.ProgressDialog;
 import android.content.Context;
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.util.Log;
@@ -14,6 +15,8 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
+import android.widget.AdapterView.OnItemClickListener;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -33,7 +36,6 @@ import com.chunsoft.net.GsonRequest;
 import com.chunsoft.net.MyApplication;
 import com.chunsoft.sport.R;
 import com.chunsoft.utils.IntentUti;
-import com.chunsoft.utils.ToastUtil;
 import com.chunsoft.view.ImageCycleView;
 import com.chunsoft.view.ImageCycleView.ImageCycleViewListener;
 import com.chunsoft.view.xListview.XListView;
@@ -53,6 +55,8 @@ public class Match_F extends Fragment implements IXListViewListener,
 	/**
 	 * variable statement
 	 */
+	private int curentPage = 1;
+	private int perPage = 15;
 	private MatchesAdapterC adapter;
 	private Context mContext;
 	private ArrayList<ADInfo> infos = new ArrayList<ADInfo>();
@@ -98,20 +102,38 @@ public class Match_F extends Fragment implements IXListViewListener,
 			infos.add(info);
 		}
 		mAdView.setImageResources(infos, mAdCycleViewListener);
-		getMatchesData(new VolleyDataCallback<ImmediateBean>() {
-			@Override
-			public void onSuccess(ImmediateBean datas) {
-				matches = new ArrayList<MatchesBean>();
-				matches = datas.matches;
-				adapter = new MatchesAdapterC(getActivity().getApplication(),
-						matches, R.layout.match_item);
-				myLv.setAdapter(adapter);
-				if (dialog != null && dialog.isShowing()) {
-					dialog.dismiss();
-					dialog = null;
-				}
-			}
-		});
+		getMatchesData(curentPage, perPage,
+				new VolleyDataCallback<ImmediateBean>() {
+					@Override
+					public void onSuccess(final ImmediateBean datas) {
+						curentPage++;
+						matches = new ArrayList<MatchesBean>();
+						matches = datas.matches;
+						adapter = new MatchesAdapterC(getActivity()
+								.getApplication(), matches, R.layout.match_item);
+						myLv.setAdapter(adapter);
+						if (dialog != null && dialog.isShowing()) {
+							dialog.dismiss();
+							dialog = null;
+						}
+						myLv.setOnItemClickListener(new OnItemClickListener() {
+
+							@Override
+							public void onItemClick(AdapterView<?> parent,
+									View view, int position, long id) {
+								Intent intent = new Intent(getActivity(),
+										Match_ShowBigdata_A.class);
+								intent.putExtra("match_id", datas.matches
+										.get((int) parent.getAdapter()
+												.getItemId(position)).match_id);
+								Log.e("match_id--->trans",
+										datas.matches.get(position).match_id
+												+ "");
+								startActivity(intent);
+							}
+						});
+					}
+				});
 	}
 
 	private void FindView(View view) {
@@ -150,8 +172,10 @@ public class Match_F extends Fragment implements IXListViewListener,
 		mAdView.pushImageCycle();
 	}
 
-	public void getMatchesData(final VolleyDataCallback<ImmediateBean> callback) {
-		String URL = Constant.IP + Constant.IMMEDIATE;
+	public void getMatchesData(int page, int per_page,
+			final VolleyDataCallback<ImmediateBean> callback) {
+		String URL = Constant.IP + Constant.IMMEDIATE + "?q[match_level_lte]=0"
+				+ "&page=" + page + "&per_page=" + per_page;
 		if (dialog == null) {
 			dialog = ProgressDialog.show(mContext, "", "正在加载...");
 			dialog.show();
@@ -185,8 +209,25 @@ public class Match_F extends Fragment implements IXListViewListener,
 
 		@Override
 		public void convert(ViewHolder holder, MatchesBean t) {
-			Log.e("比赛ID------------", t.match_id);
-			Log.e("比赛名称--------", t.team1.cn_name + ":" + t.team2.cn_name);
+			ImageView teamlogo1 = holder.getView(R.id.iv_teamlogo1);
+			ImageView teamlogo2 = holder.getView(R.id.iv_teamlogo2);
+			if (t.team1.logo_url != "" && t.team1.logo_url != null) {
+				ImageLoader.getInstance().displayImage(t.team1.logo_url,
+						teamlogo1);// 使用ImageLoader对图片进行加装！
+			}
+			if (t.team2.logo_url != "" && t.team2.logo_url != null) {
+				ImageLoader.getInstance().displayImage(t.team2.logo_url,
+						teamlogo2);// 使用ImageLoader对图片进行加装！
+			}
+			if (!t.is_guest_bigdata_recommend && !t.is_home_bigdata_recommend) {
+				holder.getView(R.id.iv_bigdata_recommend).setVisibility(
+						View.INVISIBLE);
+			}
+			if (!t.is_guest_yinglang_recommend && !t.is_home_yinglang_recommend) {
+				holder.getView(R.id.iv_yinglang_recommend).setVisibility(
+						View.INVISIBLE);
+			}
+			holder.setText(R.id.tv_begin, t.begin);
 			holder.setText(R.id.tv_status, t.status);
 			holder.setText(R.id.tv_cn_name, t.league.cn_name);
 			holder.setText(R.id.match_time, t.match_time);
@@ -199,21 +240,22 @@ public class Match_F extends Fragment implements IXListViewListener,
 
 	@Override
 	public void onRefresh() {
-		matches.clear();
-		getMatchesData(new VolleyDataCallback<ImmediateBean>() {
-			@Override
-			public void onSuccess(ImmediateBean datas) {
-				matches = new ArrayList<MatchesBean>();
-				matches = datas.matches;
-				adapter = new MatchesAdapterC(getActivity().getApplication(),
-						matches, R.layout.match_item);
-				myLv.setAdapter(adapter);
-				if (dialog != null && dialog.isShowing()) {
-					dialog.dismiss();
-					dialog = null;
-				}
-			}
-		});
+		curentPage = 1;
+		getMatchesData(curentPage, perPage,
+				new VolleyDataCallback<ImmediateBean>() {
+					@Override
+					public void onSuccess(ImmediateBean datas) {
+						matches = new ArrayList<MatchesBean>();
+						matches = datas.matches;
+						adapter = new MatchesAdapterC(getActivity()
+								.getApplication(), matches, R.layout.match_item);
+						myLv.setAdapter(adapter);
+						if (dialog != null && dialog.isShowing()) {
+							dialog.dismiss();
+							dialog = null;
+						}
+					}
+				});
 		onLoad();
 	}
 
@@ -224,7 +266,21 @@ public class Match_F extends Fragment implements IXListViewListener,
 
 	@Override
 	public void onLoadMore() {
-		ToastUtil.showLongToast(getActivity().getApplication(), "没有更多数据");
+		getMatchesData(curentPage, perPage,
+				new VolleyDataCallback<ImmediateBean>() {
+					@Override
+					public void onSuccess(ImmediateBean datas) {
+						curentPage++;
+						for (int i = 0; i < datas.matches.size(); i++) {
+							matches.add(datas.matches.get(i));
+						}
+						adapter.notifyDataSetChanged();
+						if (dialog != null && dialog.isShowing()) {
+							dialog.dismiss();
+							dialog = null;
+						}
+					}
+				});
 		onLoad();
 	}
 

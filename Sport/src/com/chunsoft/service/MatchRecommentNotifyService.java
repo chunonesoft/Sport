@@ -13,6 +13,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.media.RingtoneManager;
+import android.net.ConnectivityManager;
 import android.net.Uri;
 import android.os.IBinder;
 import android.util.Log;
@@ -22,12 +23,15 @@ import com.chunsoft.match.MatchImmediateShowActivity;
 import com.chunsoft.net.Constant;
 import com.chunsoft.net.GetJsonData;
 import com.chunsoft.sport.R;
+import com.chunsoft.utils.NetworkUtil;
 import com.chunsoft.utils.PreferencesUtils;
+import com.chunsoft.utils.ToastUtil;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 
 public class MatchRecommentNotifyService extends IntentService {
 	NotificationManager mNotificationManager;
+	ConnectivityManager mConnectivityManager;
 	SharedPreferences mPrefs;
 	private JSONArray returnData;
 
@@ -65,9 +69,15 @@ public class MatchRecommentNotifyService extends IntentService {
 		Gson gson = new Gson();
 		// Log.e("--------", getMatchRecommend("2016-03-31").toString());
 		List<MatchRecommend> recommends = new ArrayList<MatchRecommend>();
-		recommends = gson.fromJson(getMatchRecommend(lastRecommendDataTime)
-				.toString(), new TypeToken<List<MatchRecommend>>() {
-		}.getType());
+		String datas = getMatchRecommend(lastRecommendDataTime);
+		if (datas.equals("")) {
+			ToastUtil.showShortToast(getApplicationContext(), "无网络连接");
+		} else {
+			recommends = gson.fromJson(datas,
+					new TypeToken<List<MatchRecommend>>() {
+					}.getType());
+		}
+
 		if (!lastRecommendDataTime.equals("2016-02-01%2000:00")) {
 			for (MatchRecommend recommend : recommends) {
 				Intent matchShowIntent = new Intent(this,
@@ -98,10 +108,16 @@ public class MatchRecommentNotifyService extends IntentService {
 				lastRecommendDataTime);
 	}
 
-	private JSONArray getMatchRecommend(String data_time) {
+	private String getMatchRecommend(String data_time) {
+		mConnectivityManager = (ConnectivityManager) this
+				.getSystemService(Context.CONNECTIVITY_SERVICE);
 		String URL = Constant.MATCH_RECOMMENDS + "?data_time=" + data_time;
 		returnData = new JSONArray();
-		returnData = new GetJsonData().getJSONArrayDataHGET(URL);
-		return returnData;
+		if (NetworkUtil.isNetWorkAvailable(mConnectivityManager)) {
+			returnData = new GetJsonData().getJSONArrayDataHGET(URL);
+			return returnData.toString();
+		} else {
+			return "";
+		}
 	}
 }

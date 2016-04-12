@@ -1,14 +1,10 @@
 package com.chunsoft.my;
 
-import java.net.URLEncoder;
-
-import org.json.JSONException;
-import org.json.JSONObject;
+import java.io.IOException;
 
 import android.app.Activity;
 import android.app.ProgressDialog;
 import android.content.Context;
-import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.util.Log;
@@ -26,13 +22,15 @@ import com.chunsoft.bean.VolleyDataCallback;
 import com.chunsoft.match.Main_FA;
 import com.chunsoft.net.AbstractVolleyErrorListener;
 import com.chunsoft.net.Constant;
-import com.chunsoft.net.GetJsonData;
 import com.chunsoft.net.GsonRequest;
 import com.chunsoft.net.MyApplication;
 import com.chunsoft.sport.R;
 import com.chunsoft.utils.IntentUti;
 import com.chunsoft.utils.PreferencesUtils;
 import com.chunsoft.utils.ToastUtil;
+import com.lidroid.xutils.HttpUtils;
+import com.lidroid.xutils.http.ResponseStream;
+import com.lidroid.xutils.http.client.HttpRequest.HttpMethod;
 
 public class Login_A extends Activity implements OnClickListener {
 	/**
@@ -48,6 +46,8 @@ public class Login_A extends Activity implements OnClickListener {
 	EditText et_password;
 	@Bind(R.id.btn_login)
 	Button btn_login;
+	@Bind(R.id.tv_title)
+	TextView tv_title;
 	private Context mContext;
 	private ProgressDialog loadDialog;
 
@@ -57,16 +57,10 @@ public class Login_A extends Activity implements OnClickListener {
 	private String mobile;
 	private String password;
 	private String URL;
-	private JSONObject sendData;
-	private LoginBean returnData;
-	private String NET_TAG;
-	private Intent intent;
-	My_F my_F;
-	private JSONObject returnDatas = new JSONObject();
+	private String NET_TAG = "Login_A";
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
-		// TODO Auto-generated method stub
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.login);
 		ButterKnife.bind(this);
@@ -76,6 +70,7 @@ public class Login_A extends Activity implements OnClickListener {
 
 	private void init() {
 		mContext = Login_A.this;
+		tv_title.setText(getResources().getText(R.string.login));
 		loadDialog = new ProgressDialog(mContext);
 		loadDialog.setTitle("正在登录...");
 	}
@@ -90,12 +85,10 @@ public class Login_A extends Activity implements OnClickListener {
 	public void onClick(View v) {
 		switch (v.getId()) {
 		case R.id.btn_login:
-			URL = Constant.IP + Constant.LOGIN;
 			boolean flag1 = false;
 			boolean flag2 = false;
 			mobile = et_mobile.getText().toString().trim();
 			password = et_password.getText().toString().trim();
-
 			if (!password.equals("")) {
 				flag1 = true;
 			} else {
@@ -108,25 +101,19 @@ public class Login_A extends Activity implements OnClickListener {
 				ToastUtil.showShortToast(mContext, "密码不能为空");
 			}
 			if (flag1 && flag2) {
-				PreferencesUtils.putSharePre(mContext, "userName", "chunsoft");
-				PreferencesUtils.putSharePre(mContext, "phone", "18868448198");
-				PreferencesUtils.putSharePre(mContext, "password", "12345678");
-				PreferencesUtils.putSharePre(mContext, "id", 10022);
-				// IntentUti.IntentTo(mContext, Main_FA.class);
-				sendData = new JSONObject();
-				try {
-					sendData.put("user%5Blogin%5D", mobile);
-					sendData.put("user%5Bpassword%5D", password);
-				} catch (JSONException e) {
-					e.printStackTrace();
-				}
-				// new getData().execute("");
-				Log.e("------sendData", sendData.toString());
+
 				getJSONRequest(mobile, password,
 						new VolleyDataCallback<LoginBean>() {
 							@Override
 							public void onSuccess(LoginBean datas) {
-								if (datas.phone.equals("18868448198")) {
+								if (!datas.id.equals("")) {
+									PreferencesUtils.putSharePre(mContext,
+											"userName", datas.userName);
+									PreferencesUtils.putSharePre(mContext,
+											"phone", datas.phone);
+									PreferencesUtils.putSharePre(mContext,
+											"id", datas.id);
+
 									IntentUti.IntentTo(mContext, Main_FA.class);
 								} else {
 									ToastUtil.showShortToast(mContext,
@@ -150,19 +137,12 @@ public class Login_A extends Activity implements OnClickListener {
 
 	public void getJSONRequest(String mobile, String password,
 			final VolleyDataCallback<LoginBean> callback) {
-		URL = Constant.IP + Constant.LOGIN;
-		Log.e("URL", URL);
-		sendData = new JSONObject();
-		try {
-			sendData.put("user[login]", mobile);
-			sendData.put("user[password]", password);
-		} catch (JSONException e) {
-			e.printStackTrace();
-		}
-		Log.e("URLEncoder.encode(sendData.toString())",
-				URLEncoder.encode(sendData.toString()));
-		GsonRequest<LoginBean> request = new GsonRequest<LoginBean>(URL,
-				URLEncoder.encode(sendData.toString()),
+		URL = Constant.IP + Constant.LOGIN + "?user[login]=" + mobile
+				+ "&user[password]=" + password;
+		Log.e("LoginURL---->", URL);
+		// URL =
+		// "http://203.110.165.236/users/sign_in.json?user[login]=chunsoft&user[password]=12345678";
+		GsonRequest<LoginBean> request = new GsonRequest<LoginBean>(URL, "",
 				new Response.Listener<LoginBean>() {
 
 					@Override
@@ -179,57 +159,40 @@ public class Login_A extends Activity implements OnClickListener {
 		MyApplication.getInstance().addToRequestQueue(request);
 	}
 
-	// /** add Fragment */
-	// private void addFragment(Fragment fragment) {
-	// FragmentTransaction ft = getActivity().getSupportFragmentManager()
-	// .beginTransaction();
-	// ft.add(R.id.show_layout, fragment);
-	// ft.commit();
-	// }
-	//
-	// /** show Fragment */
-	// /*
-	// * private void showFragment(Fragment fragment) { FragmentTransaction ft =
-	// * getActivity().getSupportFragmentManager() .beginTransaction();
-	// * removeFragment(this); if (my_F != null) { ft.hide(my_F); }
-	// * ft.show(fragment); ft.commitAllowingStateLoss(); }
-	// *//** remove Fragment */
-	// /*
-	// * private void removeFragment(Fragment fragment) { FragmentTransaction ft
-	// =
-	// * getActivity().getSupportFragmentManager() .beginTransaction();
-	// * ft.remove(fragment); ft.commit(); }
-	// */
-
 	public class getData extends AsyncTask<String, Integer, String> {
-
 		@Override
 		protected String doInBackground(String... params) {
-			sendData = new JSONObject();
-			URL = Constant.LOGIN;
-			try {
-				sendData.put("user[login]", "chunsoft");
-				sendData.put("user[password]", "12345678");
-			} catch (JSONException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			}
-			returnDatas = new GetJsonData().getJSONObjectDataH(URL, sendData);
-			Log.e("---------", sendData.toString());
-			Log.e("--------URL", URL + "");
-			return returnDatas.toString();
-			// String URL = Constant.MATCH_RECOMMENDS + "?data_time="
-			// + "2015-03-31";
-			// Log.e("--------URL", URL + "");
-			// JSONArray returnData = new JSONArray();
-			// returnData = new GetJsonData().getJSONArrayDataHGET(URL);
-			// return returnData.toString();
+			String result = handleNetTaskPost(params[0]);
+			return result;
 		}
 
 		@Override
 		protected void onPostExecute(String result) {
-			Log.e("--------------result", result);
+			Log.e("-------------result", result);
 		}
 
 	}
+
+	public static String handleNetTaskPost(String URL) {
+		String responceInfo = null;
+		HttpUtils httpUtils = new HttpUtils();
+		// url =
+		// "http://203.110.165.236/users/sign_in.json?user[login]=chunsoft&user[password]=12345678";
+		ResponseStream responseStream;
+
+		try {
+			responseStream = httpUtils.sendSync(HttpMethod.POST, URL);
+			String string;
+			string = responseStream.readString();
+			responceInfo = string;
+		} catch (com.lidroid.xutils.exception.HttpException e) {
+
+			e.printStackTrace();
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+
+		return responceInfo;
+	}
+
 }
