@@ -12,7 +12,7 @@ import android.content.SharedPreferences;
 import android.preference.PreferenceManager;
 import android.webkit.JavascriptInterface;
 
-import com.chunsoft.match.Main_FA;
+import com.chunsoft.match.Main_FA_new;
 import com.chunsoft.match.MatchImmediateShowActivity;
 
 /**
@@ -90,7 +90,7 @@ public class WebviewBridge {
 	 */
 	@JavascriptInterface
 	public void openMatchShowBigdataActivity(int match_id) {
-		Intent intent = new Intent(mContext, Main_FA.class);
+		Intent intent = new Intent(mContext, Main_FA_new.class);
 		// Intent intent = new Intent(mContext, MatchShowBigdataActivity.class);
 		intent.putExtra("match_id", match_id);
 		mContext.startActivity(intent);
@@ -101,7 +101,7 @@ public class WebviewBridge {
 		try {
 			// 自客户端获取到选择的联赛队伍
 			String q = getString("q_leagues");
-			Intent intent = new Intent(mContext, Main_FA.class);
+			Intent intent = new Intent(mContext, Main_FA_new.class);
 			// Intent intent = new Intent(mContext,
 			// SearchByLeagueActivity.class);
 			intent.putExtra("q_leagues", q);
@@ -116,7 +116,7 @@ public class WebviewBridge {
 		try {
 			// 自客户端获取到选择的联赛队伍
 			String q = getString("q_leagues");
-			Intent intent = new Intent(mContext, Main_FA.class);
+			Intent intent = new Intent(mContext, Main_FA_new.class);
 			// Intent intent = new Intent(mContext, LeagueListActivity.class);
 			intent.putExtra("q_leagues", q);
 			mContext.startActivity(intent);
@@ -129,7 +129,7 @@ public class WebviewBridge {
 	public void openLeagueShowActivity() {
 		try {
 			String league_id = getString("league_id");
-			Intent intent = new Intent(mContext, Main_FA.class);
+			Intent intent = new Intent(mContext, Main_FA_new.class);
 			// Intent intent = new Intent(mContext, LeagueShowActivity.class);
 			intent.putExtra("league_id", league_id);
 			mContext.startActivity(intent);
@@ -143,7 +143,7 @@ public class WebviewBridge {
 		try {
 
 			// Intent intent = new Intent(mContext, OddChangeActivity.class);
-			Intent intent = new Intent(mContext, Main_FA.class);
+			Intent intent = new Intent(mContext, Main_FA_new.class);
 			mContext.startActivity(intent);
 		} catch (Exception ex) {
 			ex.printStackTrace();

@@ -11,6 +11,7 @@ import butterknife.Bind;
 import butterknife.ButterKnife;
 
 import com.chunsoft.sport.R;
+import com.chunsoft.utils.Manager;
 
 public class Match_Statistics_A extends FragmentActivity implements
 		OnClickListener {
@@ -43,6 +44,8 @@ public class Match_Statistics_A extends FragmentActivity implements
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.match_statistics);
 		ButterKnife.bind(this);
+		Manager mam = Manager.getInstance();
+		mam.pushOneActivity(Match_Statistics_A.this);
 		init();
 		Click();
 	}

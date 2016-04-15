@@ -43,7 +43,7 @@
             android:layout_height="match_parent"
             android:gravity="center"
             android:drawableLeft="@drawable/title_logo2"
-            android:text="@string/match_statistic"/>
+            android:text="@string/statistics_recommend"/>
     </LinearLayout>
     <View
         android:layout_width="match_parent"

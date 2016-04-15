@@ -1,5 +1,7 @@
 package com.chunsoft.bean;
 
+import java.util.List;
+
 public class MatchesBean {
 	public int match_id; // 比赛ID
 	public String match_time; // 比赛时间
@@ -16,4 +18,5 @@ public class MatchesBean {
 	public boolean is_home_yinglang_recommend;
 	public boolean is_guest_bigdata_recommend;
 	public boolean is_guest_yinglang_recommend;
+	public List<Match_recommandBean> match_recommands;
 }

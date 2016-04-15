@@ -91,13 +91,6 @@ public class Focus_A extends Activity implements IXListViewListener {
 
 		@Override
 		public void convert(ViewHolder holder, MatchesBean t) {
-			holder.setText(R.id.tv_status, t.status);
-			holder.setText(R.id.tv_cn_name, t.league.cn_name);
-			holder.setText(R.id.match_time, t.match_time);
-			holder.setText(R.id.tv_team1, t.team1.cn_name);
-			holder.setText(R.id.tv_team2, t.team2.cn_name);
-			holder.setText(R.id.tv_home_score, t.current_match.home_score);
-			holder.setText(R.id.tv_guest_score, t.current_match.guest_score);
 		}
 	}
 

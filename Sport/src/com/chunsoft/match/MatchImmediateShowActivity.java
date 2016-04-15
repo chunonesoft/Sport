@@ -1,8 +1,8 @@
 package com.chunsoft.match;
 
-import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.v4.app.FragmentActivity;
 import android.util.Log;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
@@ -12,9 +12,10 @@ import butterknife.ButterKnife;
 
 import com.chunsoft.net.Constant;
 import com.chunsoft.sport.R;
+import com.chunsoft.utils.Manager;
 import com.chunsoft.view.WebviewBridge;
 
-public class MatchImmediateShowActivity extends Activity {
+public class MatchImmediateShowActivity extends FragmentActivity {
 	@Bind(R.id.web_view_match_show_bigdata)
 	WebView mWebView;
 	@Bind(R.id.tv_title)
@@ -26,6 +27,8 @@ public class MatchImmediateShowActivity extends Activity {
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.match_show_bigdata);
+		Manager mam = Manager.getInstance();
+		mam.pushOneActivity(MatchImmediateShowActivity.this);
 		if (getIntent() != null && getIntent().getExtras() != null) {
 			matchID = getIntent().getExtras().getInt("match_id");
 		}

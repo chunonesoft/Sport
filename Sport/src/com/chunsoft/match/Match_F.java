@@ -19,7 +19,8 @@ import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
 import android.widget.ImageView;
 import android.widget.TextView;
-import android.widget.Toast;
+import butterknife.Bind;
+import butterknife.ButterKnife;
 
 import com.android.volley.Request.Method;
 import com.android.volley.Response;
@@ -49,7 +50,10 @@ public class Match_F extends Fragment implements IXListViewListener,
 	 */
 	ImageCycleView mAdView;
 	View cycleview;
-	private XListView myLv;
+
+	@Bind(R.id.match_x_lv)
+	XListView myLv;
+
 	private ProgressDialog dialog = null;
 	private TextView tv_analysis, tv_statistic;
 	/**
@@ -76,7 +80,7 @@ public class Match_F extends Fragment implements IXListViewListener,
 			Bundle savedInstanceState) {
 		View view = LayoutInflater.from(getActivity()).inflate(R.layout.match1,
 				null);
-		FindView(view);
+		ButterKnife.bind(this, view);
 		init();
 		Click();
 		return view;
@@ -117,35 +121,28 @@ public class Match_F extends Fragment implements IXListViewListener,
 							dialog = null;
 						}
 						myLv.setOnItemClickListener(new OnItemClickListener() {
-
 							@Override
 							public void onItemClick(AdapterView<?> parent,
 									View view, int position, long id) {
+
 								Intent intent = new Intent(getActivity(),
 										Match_ShowBigdata_A.class);
 								intent.putExtra("match_id", datas.matches
 										.get((int) parent.getAdapter()
 												.getItemId(position)).match_id);
-								Log.e("match_id--->trans",
-										datas.matches.get(position).match_id
-												+ "");
-								startActivity(intent);
+								getActivity().startActivity(intent);
 							}
 						});
 					}
 				});
 	}
 
-	private void FindView(View view) {
-		myLv = (XListView) view.findViewById(R.id.x_lv);
-	}
-
 	private ImageCycleViewListener mAdCycleViewListener = new ImageCycleViewListener() {
 
 		@Override
 		public void onImageClick(ADInfo info, int position, View imageView) {
-			Toast.makeText(mContext, "content->" + info.getContent(),
-					Toast.LENGTH_SHORT).show();
+			// Toast.makeText(mContext, "content->" + info.getContent(),
+			// Toast.LENGTH_SHORT).show();
 		}
 
 		@Override
@@ -175,7 +172,9 @@ public class Match_F extends Fragment implements IXListViewListener,
 	public void getMatchesData(int page, int per_page,
 			final VolleyDataCallback<ImmediateBean> callback) {
 		String URL = Constant.IP + Constant.IMMEDIATE + "?q[match_level_lte]=0"
-				+ "&page=" + page + "&per_page=" + per_page;
+				+ "&q[match_recommands_match_id_not_null]=1" + "&page=" + page
+				+ "&per_page=" + per_page;
+		Log.e("URL----->", URL);
 		if (dialog == null) {
 			dialog = ProgressDialog.show(mContext, "", "正在加载...");
 			dialog.show();
@@ -211,6 +210,8 @@ public class Match_F extends Fragment implements IXListViewListener,
 		public void convert(ViewHolder holder, MatchesBean t) {
 			ImageView teamlogo1 = holder.getView(R.id.iv_teamlogo1);
 			ImageView teamlogo2 = holder.getView(R.id.iv_teamlogo2);
+			TextView tv_zhu;
+			ImageView iv;
 			if (t.team1.logo_url != "" && t.team1.logo_url != null) {
 				ImageLoader.getInstance().displayImage(t.team1.logo_url,
 						teamlogo1);// 使用ImageLoader对图片进行加装！
@@ -219,22 +220,25 @@ public class Match_F extends Fragment implements IXListViewListener,
 				ImageLoader.getInstance().displayImage(t.team2.logo_url,
 						teamlogo2);// 使用ImageLoader对图片进行加装！
 			}
-			if (!t.is_guest_bigdata_recommend && !t.is_home_bigdata_recommend) {
-				holder.getView(R.id.iv_bigdata_recommend).setVisibility(
-						View.INVISIBLE);
-			}
-			if (!t.is_guest_yinglang_recommend && !t.is_home_yinglang_recommend) {
-				holder.getView(R.id.iv_yinglang_recommend).setVisibility(
-						View.INVISIBLE);
-			}
-			holder.setText(R.id.tv_begin, t.begin);
+
+			holder.setText(R.id.tv_group, t.league.cn_name);
 			holder.setText(R.id.tv_status, t.status);
-			holder.setText(R.id.tv_cn_name, t.league.cn_name);
-			holder.setText(R.id.match_time, t.match_time);
-			holder.setText(R.id.tv_team1, t.team1.cn_name);
-			holder.setText(R.id.tv_team2, t.team2.cn_name);
-			holder.setText(R.id.tv_home_score, t.current_match.home_score);
-			holder.setText(R.id.tv_guest_score, t.current_match.guest_score);
+			holder.setText(R.id.tv_teamname1, t.team1.cn_name);
+			holder.setText(R.id.tv_teamname2, t.team2.cn_name);
+			holder.setText(R.id.tv_score1, t.current_match.home_score);
+			holder.setText(R.id.tv_score2, t.current_match.guest_score);
+			if (t.match_recommands.get(0).team_id == t.team1.team_id) {
+				iv = holder.getView(R.id.iv_zhu);
+				iv = holder.getView(R.id.iv_zhu);
+				iv.setImageResource(R.drawable.y2);
+				tv_zhu = holder.getView(R.id.tv_zhu);
+				tv_zhu.setTextColor(getResources().getColor(R.color.yuce));
+			} else {
+				iv = holder.getView(R.id.iv_ke);
+				iv.setImageResource(R.drawable.y2);
+				tv_zhu = holder.getView(R.id.tv_ke);
+				tv_zhu.setTextColor(getResources().getColor(R.color.yuce));
+			}
 		}
 	}
 
@@ -245,6 +249,7 @@ public class Match_F extends Fragment implements IXListViewListener,
 				new VolleyDataCallback<ImmediateBean>() {
 					@Override
 					public void onSuccess(ImmediateBean datas) {
+						curentPage++;
 						matches = new ArrayList<MatchesBean>();
 						matches = datas.matches;
 						adapter = new MatchesAdapterC(getActivity()
@@ -301,7 +306,6 @@ public class Match_F extends Fragment implements IXListViewListener,
 		if (0 == time) {
 			return "";
 		}
-
 		return mDateFormat.format(new Date(time));
 	}
 
@@ -309,10 +313,10 @@ public class Match_F extends Fragment implements IXListViewListener,
 	public void onClick(View v) {
 		switch (v.getId()) {
 		case R.id.tv_analysis:
-			IntentUti.IntentTo(mContext, Analysis_A.class);
+			IntentUti.IntentTo(mContext, DataInfo_FA.class);
 			break;
 		case R.id.tv_statistic:
-			IntentUti.IntentTo(mContext, Match_Statistics_A.class);
+			IntentUti.IntentTo(mContext, RecommendResult_FA.class);
 			break;
 		default:
 			break;

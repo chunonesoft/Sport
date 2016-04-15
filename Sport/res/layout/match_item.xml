@@ -4,188 +4,212 @@
     android:layout_height="match_parent"
     android:background="@color/white"
     android:orientation="vertical" >
-    <RelativeLayout        
+    <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content" 
+        android:layout_height="wrap_content"
+        android:orientation="horizontal" 
         >
+        <TextView 
+            android:id="@+id/tv_group"
+            android:layout_width="0dp"
+            android:layout_weight="1"
+            android:layout_height="wrap_content"
+            android:text="西甲"
+            android:textColor="@color/black"
+            android:layout_margin="5dp"
+            android:gravity="center"
+            />
         <TextView 
             android:id="@+id/tv_status"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:textColor="@color/title"
-            android:layout_margin="10dp"
+            android:layout_margin="5dp"
             android:text="76'"
             />
-        <!-- 联赛名称 -->
-        <TextView
-            android:id="@+id/tv_cn_name"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="英超联赛"
-            android:layout_toRightOf="@id/tv_status"
-            android:layout_margin="10dp"
-            android:textColor="#9f9f9f"
-             />
-        <TextView
-            android:id="@+id/match_time"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="3月26日 12:00"
-            android:layout_alignParentRight="true"
-            android:layout_margin="10dp"
-            android:textColor="#9f9f9f"
-             />
-    </RelativeLayout>
-    <View
-        android:layout_marginLeft="10dp"
-        android:layout_marginRight="10dp"
-        android:layout_width="match_parent"
-        android:layout_height="1dp"
-        android:background="@color/top_line" />
-    <LinearLayout
-        android:layout_width="match_parent"
+    </LinearLayout>
+    <RelativeLayout
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content" 
-        android:orientation="horizontal"
-        android:layout_marginTop="10dp"
+        android:layout_marginLeft="40dp"
+        android:layout_marginRight="40dp"
         >
-        <TextView 
-            android:id="@+id/tv_team1"
-            android:layout_width="0dp"
-            android:layout_weight="1"
-            android:layout_height="wrap_content"
-            android:text="主队"
-            
-            android:textColor="@color/black"
-            android:gravity="right|center_vertical"
-            android:layout_marginRight="20dp"
-            />
         <ImageView
             android:id="@+id/iv_teamlogo1"
-            android:layout_width="20dp"
-            android:layout_height="20dp"
-            android:background="@drawable/teamlogo1" 
-            android:layout_marginRight="20dp"
+            android:layout_width="60dp" 
+            android:layout_height="60dp"
+            android:background="@drawable/teamlogo1"
+            />
+        
+        <ImageView
+            android:id="@+id/iv_teamlogo2"
+            android:layout_width="60dp" 
+            android:layout_height="60dp"
+            android:layout_alignParentRight="true"
+            android:background="@drawable/teamlogo2"
+            />
+        <LinearLayout
+            android:id="@+id/ll_name"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+             android:layout_toLeftOf="@id/iv_teamlogo2"
+            android:layout_toRightOf="@id/iv_teamlogo1"
+            >
+            <LinearLayout
+                android:layout_width="0dp"
+                android:layout_weight="1"
+                android:layout_height="wrap_content"
+                android:gravity="center"
+                >
+        <TextView
+            android:id="@+id/tv_teamname1"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" 
+            android:text="罗哥宁根"
+            android:singleLine="true"
+            android:ellipsize="end"
+            android:gravity="center"
+            android:textColor="@color/black"
             />
         <TextView
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="VS" 
+            android:layout_height="wrap_content" 
+            android:text="[主]" 
+            android:singleLine="true"
+            android:ellipsize="end"
+            android:textColor="@color/red"
+            android:layout_toRightOf="@id/tv_teamname1"
             />
-        <ImageView
-            android:id="@+id/iv_teamlogo2"
-            android:layout_marginLeft="20dp"
-            android:layout_width="20dp"
-            android:layout_height="20dp"
-            android:background="@drawable/teamlogo2" 
-            />
-        <TextView 
-            android:id="@+id/tv_team2"
+        </LinearLayout>
+        <TextView
+            android:id="@+id/tv_teamname2"
             android:layout_width="0dp"
             android:layout_weight="1"
-            android:layout_height="wrap_content"
-            android:text="客队"
-            android:layout_marginLeft="20dp"
-            android:gravity="left"
+            android:layout_height="wrap_content" 
+            android:text="格拉夫夏普"
+            android:singleLine="true"
+            android:ellipsize="end"
+            android:gravity="center"
             android:textColor="@color/black"
             />
-    </LinearLayout>
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content" 
-        android:orientation="horizontal"
-        android:layout_marginTop="10dp"
-        >
-      <!--  
-        <ImageView
-            android:id="@+id/iv_focus"
-            android:layout_width="wrap_content"
+        </LinearLayout>
+        <LinearLayout 
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:background="@drawable/bigdatarecommend" 
-            android:layout_marginLeft="20dp"
-            android:visibility="invisible"
-            />
-            -->
-        <TextView 
-            android:id="@+id/tv_home_score"
-            android:layout_width="0dp"
+            android:orientation="horizontal"
+            android:layout_marginLeft="10dp"
+            android:layout_marginRight="10dp"
+            android:layout_below="@id/ll_name"
+            android:layout_toRightOf="@id/iv_teamlogo1"
+            android:layout_toLeftOf="@id/iv_teamlogo2"
+            >
+            
+        <TextView
+            android:id="@+id/tv_score1"
+            android:layout_width="wrap_content"
             android:layout_weight="1"
             android:layout_height="wrap_content"
-            android:text="2"
-            android:textColor="@color/title"
-            android:textSize="16dp"
-            android:gravity="right"
-            android:layout_marginRight="20dp"
+            android:text="6"
+            android:gravity="center"
+            android:textColor="@color/black" 
+            android:textSize="22sp"
             />
-        <TextView 
+        <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text=":"
-            android:textSize="16dp"
-            android:textColor="@color/title"
-            android:gravity="right"
-            android:layout_marginRight="20dp"
+            android:textColor="@color/black" 
+            android:textSize="22sp"
             />
-        
-        <TextView 
-            android:id="@+id/tv_guest_score"
-            android:layout_width="0dp"
+        <TextView
+            android:id="@+id/tv_score2"
             android:layout_weight="1"
-            android:layout_height="wrap_content"
-            android:text="1"
-            android:textColor="@color/title"
-            android:textSize="16dp"
-            android:layout_marginLeft="20dp"
-            android:gravity="left"
-            />
-<!--         <ImageView
-            android:id="@+id/iv_big_data"
-           android:layout_width="wrap_content"
-           android:layout_height="wrap_content"
-           android:background="@drawable/bigdatarecommend" 
-           android:layout_marginRight="20dp"
-            /> 
-             -->
-    </LinearLayout>
-    <RelativeLayout
+            android:text="3"
+            android:gravity="center"
+            android:textColor="@color/black" 
+            android:textSize="22sp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" 
+            />  
+        </LinearLayout>
+        
+    </RelativeLayout>
+    <RelativeLayout 
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginBottom="10dp" 
+        android:layout_marginTop="10dp"
+        android:layout_marginBottom="10dp"
         >
-        <ImageView 
-            android:id="@+id/iv_kaipan"
+    <Button
+        android:id="@+id/iv_yuce"
+         android:layout_width="wrap_content"
+         android:layout_height="24dp"
+         android:background="@drawable/y1"
+         android:textColor="@color/white"
+         android:text="预测"
+         android:focusable="false"
+			android:clickable="false" 
+		android:focusableInTouchMode="false"
+         android:layout_marginLeft="10dp"
+         android:layout_marginRight="20dp"
+        />
+        
+      <LinearLayout
+          android:layout_width="match_parent"
+          android:layout_height="wrap_content"
+          android:layout_toRightOf="@id/iv_yuce" 
+          android:orientation="horizontal"
+          android:layout_marginRight="10dp"
+          >
+        <LinearLayout 
+            android:layout_width="0dp"
+            android:layout_weight="1"
+             android:gravity="center" 
+            android:orientation="horizontal"
+            android:layout_height="wrap_content"
+            >
+         <ImageView 
+            android:id="@+id/iv_zhu"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginLeft="20dp"
-            android:layout_centerVertical="true"
-            android:background="@drawable/yuce"
-            />
-        <TextView 
-            android:id="@+id/tv_begin"
+            android:gravity="center"        
+            android:background="@drawable/y3"/>
+         <TextView
+             android:id="@+id/tv_zhu" 
+             android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:gravity="center"  
+            android:textSize="20sp"
+            android:layout_marginLeft="10dp"     
+            android:text="主胜"
+             />
+         </LinearLayout>
+          <LinearLayout 
+            android:layout_width="0dp"
+            android:layout_weight="1"
+             android:gravity="center" 
+            android:layout_height="wrap_content"
+            >
+            <ImageView 
+            android:id="@+id/iv_ke"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginLeft="20dp"
-            android:text="半开"
-            android:layout_toRightOf="@id/iv_kaipan"
-            android:textColor="@color/red"
-            android:layout_centerVertical="true"
-            />
-        <ImageView 
-            android:id="@+id/iv_yinglang_recommend"
-            android:layout_width="wrap_content"
+            android:gravity="center"
+            android:background="@drawable/y3"/>
+            <TextView
+             android:id="@+id/tv_ke" 
+             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginLeft="20dp"
-            android:background="@drawable/yinglangrecommend"
-            android:layout_alignParentRight="true"
-            android:layout_marginRight="20dp"
-            />
-        <ImageView 
-            android:id="@+id/iv_bigdata_recommend"
-            android:layout_toLeftOf="@id/iv_yinglang_recommend"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginLeft="20dp"
-            android:background="@drawable/bigdatarecommend"
-            android:layout_marginRight="20dp"
-            />
+            android:gravity="center"       
+            android:text="客胜"
+            android:layout_marginLeft="10dp"
+            android:textSize="20sp"
+             />
+            </LinearLayout>
+     
+            </LinearLayout>         
+       
     </RelativeLayout>
+  
 </LinearLayout>

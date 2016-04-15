@@ -355,5 +355,7 @@
     <color name="line_normal">#e7e7e7</color>
     <color name="title_text">#5f646e</color>
     <color name="title_bg">#f9f9f9</color>
+    <color name="yuce">#4487c2</color>
+    <color name="calendar_top_bg">#F5A0B3</color>
 
 </resources>

@@ -1,5 +1,6 @@
 package com.chunsoft.my;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
@@ -14,6 +15,8 @@ import butterknife.ButterKnife;
 import com.chunsoft.sport.R;
 import com.chunsoft.utils.IntentUti;
 import com.chunsoft.utils.PreferencesUtils;
+import com.chunsoft.utils.ToastUtil;
+import com.chunsoft.utils.UpdateManager;
 
 public class My_F extends Fragment implements OnClickListener {
 	@Bind(R.id.ll_exit)
@@ -57,12 +60,21 @@ public class My_F extends Fragment implements OnClickListener {
 			IntentUti.IntentTo(getActivity(), Login_A.class);
 			break;
 		case R.id.ll_checkUpdate:
+			UpdateManager manager = new UpdateManager(getActivity());
+			// manager.checkUpdate();
 			break;
 		case R.id.ll_set:
-			IntentUti.IntentTo(getActivity(), Set_A.class);
+			ToastUtil.showShortToast(getActivity(), "程序员正在紧张开发中。。。。");
+			// IntentUti.IntentTo(getActivity(), Set_A.class);
 			break;
 		case R.id.ll_focus:
-			IntentUti.IntentTo(getActivity(), Focus_A.class);
+			Intent intent = new Intent(Intent.ACTION_SEND);
+			intent.setType("text/plain");
+			intent.putExtra(
+					Intent.EXTRA_TEXT,
+					"http://git.oschina.net/chengdh/yinglang-sport-app-release/raw/master/app-release.apk (来自赢朗体育)。");
+			intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+			startActivity(Intent.createChooser(intent, "分享"));
 			break;
 		default:
 			break;

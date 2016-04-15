@@ -1,9 +1,9 @@
 package com.chunsoft.match;
 
-import android.app.Activity;
 import android.content.Context;
 import android.net.ConnectivityManager;
 import android.os.Bundle;
+import android.support.v4.app.FragmentActivity;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
@@ -13,13 +13,14 @@ import butterknife.ButterKnife;
 
 import com.chunsoft.net.Constant;
 import com.chunsoft.sport.R;
+import com.chunsoft.utils.Manager;
 import com.chunsoft.utils.NetworkUtil;
 import com.chunsoft.view.WebviewBridge;
 
 /**
- * 大数据报告展示界面 Created by chengdh on 16/1/18.
+ * 大数据报告展示界面
  */
-public class Match_ShowBigdata_A extends Activity implements
+public class Match_ShowBigdata_A extends FragmentActivity implements
 		SwipeRefreshLayout.OnRefreshListener {
 
 	@Bind(R.id.web_view_match_recommend_report)
@@ -41,6 +42,8 @@ public class Match_ShowBigdata_A extends Activity implements
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.show_detail);
+		Manager mam = Manager.getInstance();
+		mam.pushOneActivity(Match_ShowBigdata_A.this);
 		ButterKnife.bind(this);
 		if (getIntent() != null && getIntent().getExtras() != null) {
 			matchID = getIntent().getExtras().getInt("match_id");

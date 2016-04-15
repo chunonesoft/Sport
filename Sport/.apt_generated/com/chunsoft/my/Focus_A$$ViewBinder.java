@@ -8,14 +8,14 @@ import butterknife.ButterKnife.ViewBinder;
 public class Focus_A$$ViewBinder<T extends com.chunsoft.my.Focus_A> implements ViewBinder<T> {
   @Override public void bind(final Finder finder, final T target, Object source) {
     View view;
-    view = finder.findRequiredView(source, 2131099741, "field 'tv_title'");
-    target.tv_title = finder.castView(view, 2131099741, "field 'tv_title'");
-    view = finder.findRequiredView(source, 2131099673, "field 'lv'");
-    target.lv = finder.castView(view, 2131099673, "field 'lv'");
+    view = finder.findRequiredView(source, 2131099675, "field 'lv'");
+    target.lv = finder.castView(view, 2131099675, "field 'lv'");
+    view = finder.findRequiredView(source, 2131099744, "field 'tv_title'");
+    target.tv_title = finder.castView(view, 2131099744, "field 'tv_title'");
   }
 
   @Override public void unbind(T target) {
-    target.tv_title = null;
     target.lv = null;
+    target.tv_title = null;
   }
 }

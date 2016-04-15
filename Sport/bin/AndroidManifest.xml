@@ -20,7 +20,7 @@
         android:theme="@style/AppTheme"
         >
          <activity
-            android:name="com.chunsoft.match.Main_FA"
+            android:name="com.chunsoft.match.Main_FA_new"
             android:label="@string/app_name" >
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -30,14 +30,25 @@
         </activity>
         <activity 
             android:name="com.chunsoft.match.MatchImmediateShowActivity"></activity>
-        <activity android:name="com.chunsoft.my.Login_A"/>
+        <activity android:name="com.chunsoft.my.Login_A">
+             <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value="com.chunsoft.match.Main_FA_new"
+                android:configChanges="orientation|keyboardHidden|screenSize"
+                android:label="@string/app_name"
+                android:launchMode="singleTop"
+                android:parentActivityName="com.chunsoft.match.Main_FA_new"/>
+        </activity>
         <activity android:name="com.chunsoft.my.Set_A"/>
-        <activity android:name="com.chunsoft.match.Analysis_A"></activity>
+        <activity android:name="com.chunsoft.match.DataInfo_FA"></activity>
         <activity android:name="com.chunsoft.match.Match_Statistics_A"></activity>
         <activity android:name="com.chunsoft.my.Focus_A"></activity>
         <activity android:name="com.chunsoft.my.Register_A"></activity>
         <activity android:name="com.chunsoft.my.Forget_Pwd_A"></activity>
         <activity android:name="com.chunsoft.match.Match_ShowBigdata_A"></activity>
+        <activity android:name="com.chunsoft.match.Statistics_FA"></activity>
+        <activity android:name="com.chunsoft.match.RecommendResult_FA"></activity>
+        <activity android:name="com.chunsoft.match.DateSelect_A"></activity>
         <service
             android:name="com.chunsoft.service.MatchRecommentNotifyService"
             android:enabled="true"

@@ -62,7 +62,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="10dp"
                 android:layout_weight="1"
-                android:text="关注比赛"
+                android:text="分享"
                 android:textColor="@color/tv_Black" />
 
             <ImageView

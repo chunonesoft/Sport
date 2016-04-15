@@ -19,7 +19,7 @@ import butterknife.ButterKnife;
 import com.android.volley.Response;
 import com.chunsoft.bean.LoginBean;
 import com.chunsoft.bean.VolleyDataCallback;
-import com.chunsoft.match.Main_FA;
+import com.chunsoft.match.Main_FA_new;
 import com.chunsoft.net.AbstractVolleyErrorListener;
 import com.chunsoft.net.Constant;
 import com.chunsoft.net.GsonRequest;
@@ -114,7 +114,8 @@ public class Login_A extends Activity implements OnClickListener {
 									PreferencesUtils.putSharePre(mContext,
 											"id", datas.id);
 
-									IntentUti.IntentTo(mContext, Main_FA.class);
+									IntentUti.IntentTo(mContext,
+											Main_FA_new.class);
 								} else {
 									ToastUtil.showShortToast(mContext,
 											"用户登录失败，请检查用户名和密码！");

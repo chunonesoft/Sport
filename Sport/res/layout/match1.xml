@@ -17,9 +17,11 @@
     </LinearLayout>
     
     <com.chunsoft.view.xListview.XListView
-        android:id="@+id/x_lv"
+        android:id="@+id/match_x_lv"
         android:background="#eeeeee"
         android:dividerHeight="3dp"
+        android:focusable="true"
+        android:focusableInTouchMode="true"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:cacheColorHint="#00000000" >       

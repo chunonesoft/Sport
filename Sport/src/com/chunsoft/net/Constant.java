@@ -10,5 +10,6 @@ public class Constant {
 	public static String EVENTS = "my_favorites/{user_id}/events.json";
 	public static String RECOMMEND_RESULT = "match_recommands/report";
 	public static String ODD_CHANGES = "odd_changes";
+	public static String ODD_CHANGES_DATA = "odd_changes.json";
 
 }
