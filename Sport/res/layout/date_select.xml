@@ -4,7 +4,7 @@
     android:layout_width="fill_parent"
     android:layout_height="wrap_content"
     android:visibility="visible" 
-    android:background="@color/calendar_top_bg">
+    android:background="@color/title">
 
     <TextView
         android:id="@+id/calendarCenter"

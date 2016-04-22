@@ -8,6 +8,7 @@ import android.app.ProgressDialog;
 import android.content.Context;
 import android.os.Bundle;
 import android.support.v4.app.FragmentActivity;
+import android.util.Log;
 import android.widget.ImageView;
 import android.widget.TextView;
 import butterknife.Bind;
@@ -87,14 +88,22 @@ public class DataInfo_FA extends FragmentActivity implements IXListViewListener 
 		@Override
 		public void convert(ViewHolder holder, OddChangeItemBean t) {
 			ImageView iv_logo = holder.getView(R.id.iv_logo);
-
-			if (t.team.team_logoname != "" && t.team.team_logoname != null) {
-				ImageLoader.getInstance().displayImage(t.team.team_logoname,
-						iv_logo);
+			Log.e("t.team.logo_url", "1" + t.team.logo_url);
+			if (!t.team.logo_url.equals("")) {
+				Log.e("t.team.logo_url", "2" + t.team.logo_url);
+				ImageLoader.getInstance()
+						.displayImage(t.team.logo_url, iv_logo);
+			} else {
+				iv_logo.setImageResource(R.drawable.logo);
 			}
 			holder.setText(R.id.tv_name, t.team.cn_name);
 			holder.setText(R.id.tv_time, t.data_time_str.substring(11));
-			holder.setText(R.id.tv_content, t.change_type_des);
+			if (t.change_type_des.equals("上升")) {
+				holder.setText(R.id.tv_content, "盘口" + t.change_type_des);
+			} else {
+				holder.setText(R.id.tv_content, "水位" + t.change_type_des);
+			}
+
 			holder.setText(R.id.tv_state, "[" + t.match_type_des + "]");
 		}
 	}
@@ -106,6 +115,7 @@ public class DataInfo_FA extends FragmentActivity implements IXListViewListener 
 		String time = getCurrentTime(System.currentTimeMillis()) + "%2000:00";
 		String URL = Constant.IP + Constant.ODD_CHANGES_DATA
 				+ "?q[data_time_gte]=" + time;
+		Log.e("URL---->", URL);
 		if (dialog == null) {
 			dialog = ProgressDialog.show(DataInfo_FA.this, "", "正在加载...");
 			dialog.show();

@@ -53,7 +53,7 @@ public class Match_ShowBigdata_A extends FragmentActivity implements
 	}
 
 	private void init() {
-		tv_title.setText(getResources().getText(R.string.match_detail));
+		tv_title.setText(getResources().getText(R.string.big_data));
 		mConnectivityManager = (ConnectivityManager) this
 				.getSystemService(Context.CONNECTIVITY_SERVICE);
 		String url = Constant.IP + q + "/" + matchID + "/" + q2;
@@ -92,7 +92,7 @@ public class Match_ShowBigdata_A extends FragmentActivity implements
 
 	@Override
 	public void onRefresh() {
-		String url = Constant.IP + Constant.RECOMMEND_RESULT;
+		String url = Constant.IP + q + "/" + matchID + "/" + q2;
 		if (NetworkUtil.isNetWorkAvailable(mConnectivityManager)) {
 			mWebView.loadUrl(url);
 		} else {

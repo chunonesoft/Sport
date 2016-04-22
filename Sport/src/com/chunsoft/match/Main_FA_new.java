@@ -55,6 +55,12 @@ public class Main_FA_new extends FragmentActivity implements OnClickListener {
 		startMatchRecommendService();
 	}
 
+	@Override
+	protected void onSaveInstanceState(Bundle outState) {
+		// TODO Auto-generated method stub
+		// super.onSaveInstanceState(outState);
+	}
+
 	private void initView() {
 		mContext = Main_FA_new.this;
 		for (int i = 0; i < btn_menu.length; i++) {

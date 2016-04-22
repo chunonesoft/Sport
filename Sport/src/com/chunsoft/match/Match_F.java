@@ -171,10 +171,10 @@ public class Match_F extends Fragment implements IXListViewListener,
 
 	public void getMatchesData(int page, int per_page,
 			final VolleyDataCallback<ImmediateBean> callback) {
-		String URL = Constant.IP + Constant.IMMEDIATE + "?q[match_level_lte]=0"
+		String URL = Constant.IP + Constant.IMMEDIATE
 				+ "&q[match_recommands_match_id_not_null]=1" + "&page=" + page
 				+ "&per_page=" + per_page;
-		Log.e("URL----->", URL);
+		Log.e("URL------>", URL);
 		if (dialog == null) {
 			dialog = ProgressDialog.show(mContext, "", "正在加载...");
 			dialog.show();
@@ -210,34 +210,72 @@ public class Match_F extends Fragment implements IXListViewListener,
 		public void convert(ViewHolder holder, MatchesBean t) {
 			ImageView teamlogo1 = holder.getView(R.id.iv_teamlogo1);
 			ImageView teamlogo2 = holder.getView(R.id.iv_teamlogo2);
-			TextView tv_zhu;
-			ImageView iv;
-			if (t.team1.logo_url != "" && t.team1.logo_url != null) {
+			TextView tv_zhu, tv_ke;
+			ImageView iv_zhu, iv_ke;
+
+			if (t.match_recommands.get(0).result_type > 0) {
+				holder.getView(R.id.iv_mingzhong).setVisibility(View.VISIBLE);
+			} else {
+				holder.getView(R.id.iv_mingzhong).setVisibility(View.INVISIBLE);
+			}
+			if (!t.team1.logo_url.equals("")) {
 				ImageLoader.getInstance().displayImage(t.team1.logo_url,
 						teamlogo1);// 使用ImageLoader对图片进行加装！
+			} else {
+				teamlogo1.setImageResource(R.drawable.icon_empty);
 			}
-			if (t.team2.logo_url != "" && t.team2.logo_url != null) {
+			if (!t.team2.logo_url.equals("")) {
 				ImageLoader.getInstance().displayImage(t.team2.logo_url,
 						teamlogo2);// 使用ImageLoader对图片进行加装！
+			} else {
+				teamlogo2.setImageResource(R.drawable.icon_empty);
 			}
 
+			if (!(null == t.half_home_score)) {
+				holder.getView(R.id.tv_half).setVisibility(View.VISIBLE);
+				holder.setText(R.id.tv_half, t.half_home_score + ":"
+						+ t.half_guest_score);
+			} else {
+				holder.getView(R.id.tv_half).setVisibility(View.INVISIBLE);
+			}
+			holder.setText(R.id.tv_time, t.match_time);
+			holder.setText(R.id.tv_begin, t.begin);
 			holder.setText(R.id.tv_group, t.league.cn_name);
 			holder.setText(R.id.tv_status, t.status);
 			holder.setText(R.id.tv_teamname1, t.team1.cn_name);
 			holder.setText(R.id.tv_teamname2, t.team2.cn_name);
-			holder.setText(R.id.tv_score1, t.current_match.home_score);
-			holder.setText(R.id.tv_score2, t.current_match.guest_score);
+			if (t.match_describe.equals("未开")) {
+				holder.setText(R.id.tv_dot, "未开");
+				holder.getView(R.id.tv_score1).setVisibility(View.INVISIBLE);
+				holder.getView(R.id.tv_score2).setVisibility(View.INVISIBLE);
+			} else {
+				holder.getView(R.id.tv_score1).setVisibility(View.VISIBLE);
+				holder.getView(R.id.tv_score2).setVisibility(View.VISIBLE);
+				holder.setText(R.id.tv_dot, ":");
+				holder.setText(R.id.tv_score1, t.current_match.home_score);
+				holder.setText(R.id.tv_score2, t.current_match.guest_score);
+			}
+
 			if (t.match_recommands.get(0).team_id == t.team1.team_id) {
-				iv = holder.getView(R.id.iv_zhu);
-				iv = holder.getView(R.id.iv_zhu);
-				iv.setImageResource(R.drawable.y2);
+				iv_zhu = holder.getView(R.id.iv_zhu);
+				iv_zhu.setImageResource(R.drawable.y2);
 				tv_zhu = holder.getView(R.id.tv_zhu);
 				tv_zhu.setTextColor(getResources().getColor(R.color.yuce));
-			} else {
-				iv = holder.getView(R.id.iv_ke);
-				iv.setImageResource(R.drawable.y2);
-				tv_zhu = holder.getView(R.id.tv_ke);
-				tv_zhu.setTextColor(getResources().getColor(R.color.yuce));
+				iv_ke = holder.getView(R.id.iv_ke);
+				iv_ke.setImageResource(R.drawable.y3);
+				tv_ke = holder.getView(R.id.tv_ke);
+				tv_ke.setTextColor(getResources().getColor(R.color.grey));
+			} else if (t.match_recommands.get(0).team_id == t.team2.team_id) {
+
+				iv_ke = holder.getView(R.id.iv_ke);
+				iv_ke.setImageResource(R.drawable.y2);
+				tv_ke = holder.getView(R.id.tv_ke);
+				tv_ke.setTextColor(getResources().getColor(R.color.yuce));
+
+				iv_zhu = holder.getView(R.id.iv_zhu);
+				iv_zhu.setImageResource(R.drawable.y3);
+				tv_zhu = holder.getView(R.id.tv_zhu);
+				tv_zhu.setTextColor(getResources().getColor(R.color.gray));
 			}
 		}
 	}
@@ -245,6 +283,7 @@ public class Match_F extends Fragment implements IXListViewListener,
 	@Override
 	public void onRefresh() {
 		curentPage = 1;
+		matches.clear();
 		getMatchesData(curentPage, perPage,
 				new VolleyDataCallback<ImmediateBean>() {
 					@Override
@@ -252,8 +291,8 @@ public class Match_F extends Fragment implements IXListViewListener,
 						curentPage++;
 						matches = new ArrayList<MatchesBean>();
 						matches = datas.matches;
-						adapter = new MatchesAdapterC(getActivity()
-								.getApplication(), matches, R.layout.match_item);
+						adapter = new MatchesAdapterC(getActivity(), matches,
+								R.layout.match_item);
 						myLv.setAdapter(adapter);
 						if (dialog != null && dialog.isShowing()) {
 							dialog.dismiss();

@@ -6,6 +6,8 @@ import java.util.List;
 import android.app.Activity;
 import android.app.Application;
 import android.content.Context;
+import android.content.Intent;
+import android.content.IntentFilter;
 import android.text.TextUtils;
 
 import com.android.volley.Request;
@@ -60,6 +62,9 @@ public class MyApplication extends Application {
 				.discCacheFileNameGenerator(new Md5FileNameGenerator())
 				.tasksProcessingOrder(QueueProcessingType.LIFO).build();
 		ImageLoader.getInstance().init(config);
+		IntentFilter filter = new IntentFilter(Intent.ACTION_TIME_TICK);
+		MyBroadcastReceiver receiver = new MyBroadcastReceiver();
+		registerReceiver(receiver, filter);
 	}
 
 	public static synchronized MyApplication getInstance() {

@@ -14,6 +14,8 @@ public class MatchesBean {
 	public String match_describe; // 比分描述
 	public String finished; // 是否结束
 	public String begin;
+	public String half_home_score; // 半场主队进球
+	public String half_guest_score;// 半场客队进球
 	public boolean is_home_bigdata_recommend;
 	public boolean is_home_yinglang_recommend;
 	public boolean is_guest_bigdata_recommend;

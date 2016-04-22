@@ -16,8 +16,8 @@
         android:layout_weight="1"
         android:layout_height="wrap_content"
         android:textColor="#a1a4aa"
-        android:layout_margin="10dp"
-        android:text="@string/btn_start"
+        android:layout_margin="10dp"    
+        android:hint="@string/btn_start"
         />
     <Button
         android:id="@+id/btn_end"
@@ -27,8 +27,23 @@
         android:layout_height="wrap_content"
         android:textColor="#a1a4aa"
         android:layout_margin="10dp"
-        android:text="@string/btn_end"
+        android:hint="@string/btn_end"
         />
+    <Button 
+        android:id="@+id/btn_search"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:gravity="center"
+        android:layout_gravity="center"
+        android:background="@drawable/button_style"
+        android:textColor="@color/white"
+        android:paddingLeft="15dp"
+        android:paddingRight="15dp"
+        android:paddingTop="5dp"
+        android:paddingBottom="5dp"
+        android:layout_marginLeft="10dp"
+        android:layout_marginRight="20dp"
+        android:text="查询"/>
 	</LinearLayout>
 	<View
          android:layout_width="match_parent"
@@ -66,7 +81,7 @@
             android:text="胜负"
             android:textColor="#646b76" 
             />
-        <TextView
+  <!--       <TextView
             android:layout_width="0dp"
             android:layout_height="match_parent"
             android:gravity="center"
@@ -74,19 +89,63 @@
             android:text="赢" 
             android:textColor="#646b76"
             />
-       
+        -->
     </LinearLayout>
     <View
            android:layout_width="match_parent"
            android:layout_height="1dp"
            android:background="#dedfe0" 
            />
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent" 
+        android:orientation="vertical"
+        >
     <com.chunsoft.view.xListview.XListView
         android:id="@+id/result_x_lv"
         android:background="#eeeeee"
         android:dividerHeight="1dp"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
+        android:layout_weight="1"
         android:cacheColorHint="#00000000" >       
     </com.chunsoft.view.xListview.XListView>
+   <LinearLayout 
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        android:orientation="vertical"
+        >
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:background="@color/gray" 
+            />
+        <LinearLayout 
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="horizontal"
+            >
+        <TextView
+            android:id="@+id/tv_winNum"
+            android:layout_weight="1"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:text="净胜场次：0场"
+            android:gravity="center"
+            android:textSize="16sp"
+            android:textColor="@color/title"
+            />
+        <TextView
+            android:id="@+id/tv_winRate"
+            android:layout_weight="1"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:text="胜率：00.00%"
+            android:gravity="center"
+            android:textSize="16sp"
+            android:textColor="@color/title"
+            />
+        </LinearLayout>
+    </LinearLayout>
+    </LinearLayout>
 </LinearLayout>

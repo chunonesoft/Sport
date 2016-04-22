@@ -2,11 +2,11 @@ package com.chunsoft.my;
 
 import java.io.IOException;
 
-import android.app.Activity;
 import android.app.ProgressDialog;
 import android.content.Context;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.support.v4.app.FragmentActivity;
 import android.util.Log;
 import android.view.View;
 import android.view.View.OnClickListener;
@@ -26,13 +26,14 @@ import com.chunsoft.net.GsonRequest;
 import com.chunsoft.net.MyApplication;
 import com.chunsoft.sport.R;
 import com.chunsoft.utils.IntentUti;
+import com.chunsoft.utils.Manager;
 import com.chunsoft.utils.PreferencesUtils;
 import com.chunsoft.utils.ToastUtil;
 import com.lidroid.xutils.HttpUtils;
 import com.lidroid.xutils.http.ResponseStream;
 import com.lidroid.xutils.http.client.HttpRequest.HttpMethod;
 
-public class Login_A extends Activity implements OnClickListener {
+public class Login_A extends FragmentActivity implements OnClickListener {
 	/**
 	 * widget statement
 	 */
@@ -64,6 +65,8 @@ public class Login_A extends Activity implements OnClickListener {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.login);
 		ButterKnife.bind(this);
+		Manager mam = Manager.getInstance();
+		mam.pushOneActivity(Login_A.this);
 		init();
 		Click();
 	}

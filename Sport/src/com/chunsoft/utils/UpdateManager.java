@@ -33,7 +33,7 @@ import com.chunsoft.sport.R;
  * Created by chunsoft on 15/12/2.
  */
 public class UpdateManager {
-	private static final String URL_VERSION_XML = "http://git.oschina.net/chengdh/yinglang-sport-app-release/raw/master/version-sport.xml?dir=0&filepath=version-sport.xml&oid=8ddd578dae8d34e3f1311b2cd7a0ac3844a69f66&sha=e8ab4efa51b754d2e4c766ce233fa4586d683bc7";
+	private static final String URL_VERSION_XML = "http://git.oschina.net/chengdh/yinglang-sport-app-release/raw/master/version.xml";
 	// 下载中
 	private static final int DOWNLOAD = 1;
 	// 下载结束

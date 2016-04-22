@@ -10,8 +10,8 @@ public class Focus_A$$ViewBinder<T extends com.chunsoft.my.Focus_A> implements V
     View view;
     view = finder.findRequiredView(source, 2131099675, "field 'lv'");
     target.lv = finder.castView(view, 2131099675, "field 'lv'");
-    view = finder.findRequiredView(source, 2131099744, "field 'tv_title'");
-    target.tv_title = finder.castView(view, 2131099744, "field 'tv_title'");
+    view = finder.findRequiredView(source, 2131099751, "field 'tv_title'");
+    target.tv_title = finder.castView(view, 2131099751, "field 'tv_title'");
   }
 
   @Override public void unbind(T target) {
