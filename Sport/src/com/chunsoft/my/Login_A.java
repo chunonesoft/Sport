@@ -32,6 +32,7 @@ import com.chunsoft.utils.ToastUtil;
 import com.lidroid.xutils.HttpUtils;
 import com.lidroid.xutils.http.ResponseStream;
 import com.lidroid.xutils.http.client.HttpRequest.HttpMethod;
+import com.umeng.analytics.MobclickAgent;
 
 public class Login_A extends FragmentActivity implements OnClickListener {
 	/**
@@ -116,7 +117,7 @@ public class Login_A extends FragmentActivity implements OnClickListener {
 											"phone", datas.phone);
 									PreferencesUtils.putSharePre(mContext,
 											"id", datas.id);
-
+									MobclickAgent.onProfileSignIn(datas.phone);
 									IntentUti.IntentTo(mContext,
 											Main_FA_new.class);
 								} else {

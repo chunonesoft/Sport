@@ -16,6 +16,7 @@ import com.chunsoft.sport.R;
 import com.chunsoft.utils.Manager;
 import com.chunsoft.utils.NetworkUtil;
 import com.chunsoft.view.WebviewBridge;
+import com.umeng.analytics.MobclickAgent;
 
 /**
  * 大数据报告展示界面
@@ -42,6 +43,7 @@ public class Match_ShowBigdata_A extends FragmentActivity implements
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.show_detail);
+		MobclickAgent.openActivityDurationTrack(false);
 		Manager mam = Manager.getInstance();
 		mam.pushOneActivity(Match_ShowBigdata_A.this);
 		ButterKnife.bind(this);
@@ -98,5 +100,19 @@ public class Match_ShowBigdata_A extends FragmentActivity implements
 		} else {
 			mWebView.loadUrl("file:///android_asset/net_error.html");
 		}
+	}
+
+	@Override
+	public void onPause() {
+		super.onPause();
+		MobclickAgent.onPageEnd("Big Data page");
+		MobclickAgent.onPause(this);
+	}
+
+	@Override
+	public void onResume() {
+		super.onResume();
+		MobclickAgent.onPageStart("Big Data page");
+		MobclickAgent.onResume(this);
 	}
 }

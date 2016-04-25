@@ -8,6 +8,7 @@ import java.util.List;
 import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.Intent;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.util.Log;
@@ -30,9 +31,11 @@ import com.chunsoft.bean.ADInfo;
 import com.chunsoft.bean.ImmediateBean;
 import com.chunsoft.bean.Immediate_leagues_Bean;
 import com.chunsoft.bean.MatchesBean;
+import com.chunsoft.bean.RecommendMatchBean;
 import com.chunsoft.bean.VolleyDataCallback;
 import com.chunsoft.net.AbstractVolleyErrorListener;
 import com.chunsoft.net.Constant;
+import com.chunsoft.net.GetJsonData;
 import com.chunsoft.net.GsonRequest;
 import com.chunsoft.net.MyApplication;
 import com.chunsoft.sport.R;
@@ -41,7 +44,10 @@ import com.chunsoft.view.ImageCycleView;
 import com.chunsoft.view.ImageCycleView.ImageCycleViewListener;
 import com.chunsoft.view.xListview.XListView;
 import com.chunsoft.view.xListview.XListView.IXListViewListener;
+import com.google.gson.Gson;
+import com.google.gson.reflect.TypeToken;
 import com.nostra13.universalimageloader.core.ImageLoader;
+import com.umeng.analytics.MobclickAgent;
 
 public class Match_F extends Fragment implements IXListViewListener,
 		OnClickListener {
@@ -62,6 +68,8 @@ public class Match_F extends Fragment implements IXListViewListener,
 	private int curentPage = 1;
 	private int perPage = 15;
 	private MatchesAdapterC adapter;
+	private RecommendsAdapter adapterA;
+	List<RecommendMatchBean> recommends;
 	private Context mContext;
 	private ArrayList<ADInfo> infos = new ArrayList<ADInfo>();
 	private String[] imageUrls = {
@@ -81,6 +89,9 @@ public class Match_F extends Fragment implements IXListViewListener,
 		View view = LayoutInflater.from(getActivity()).inflate(R.layout.match1,
 				null);
 		ButterKnife.bind(this, view);
+		// SDK在统计Fragment时，需要关闭Activity自带的页面统计，
+		// 然后在每个页面中重新集成页面统计的代码(包括调用了 onResume 和 onPause 的Activity)。
+		MobclickAgent.openActivityDurationTrack(false);
 		init();
 		Click();
 		return view;
@@ -113,26 +124,38 @@ public class Match_F extends Fragment implements IXListViewListener,
 						curentPage++;
 						matches = new ArrayList<MatchesBean>();
 						matches = datas.matches;
-						adapter = new MatchesAdapterC(getActivity()
-								.getApplication(), matches, R.layout.match_item);
-						myLv.setAdapter(adapter);
+						if (datas.matches.size() != 0) {
+							adapter = new MatchesAdapterC(getActivity()
+									.getApplication(), matches,
+									R.layout.match_item);
+							myLv.setAdapter(adapter);
+							myLv.setOnItemClickListener(new OnItemClickListener() {
+								@Override
+								public void onItemClick(AdapterView<?> parent,
+										View view, int position, long id) {
+
+									Intent intent = new Intent(getActivity(),
+											Match_ShowBigdata_A.class);
+									intent.putExtra("match_id",
+											datas.matches.get((int) parent
+													.getAdapter().getItemId(
+															position)).match_id);
+									getActivity().startActivity(intent);
+								}
+							});
+						} else {
+							// 设置可以进行下拉加载的功能
+							myLv.setPullLoadEnable(false);
+							myLv.setPullRefreshEnable(false);
+							new getRecommendData()
+									.execute("match_recommands/recent_win.json");
+						}
+
 						if (dialog != null && dialog.isShowing()) {
 							dialog.dismiss();
 							dialog = null;
 						}
-						myLv.setOnItemClickListener(new OnItemClickListener() {
-							@Override
-							public void onItemClick(AdapterView<?> parent,
-									View view, int position, long id) {
 
-								Intent intent = new Intent(getActivity(),
-										Match_ShowBigdata_A.class);
-								intent.putExtra("match_id", datas.matches
-										.get((int) parent.getAdapter()
-												.getItemId(position)).match_id);
-								getActivity().startActivity(intent);
-							}
-						});
 					}
 				});
 	}
@@ -155,12 +178,14 @@ public class Match_F extends Fragment implements IXListViewListener,
 	public void onResume() {
 		super.onResume();
 		mAdView.startImageCycle();
+		MobclickAgent.onPageStart("Recommend Match Page");
 	};
 
 	@Override
 	public void onPause() {
 		super.onPause();
 		mAdView.pushImageCycle();
+		MobclickAgent.onPageEnd("Recommend Match Page");
 	}
 
 	@Override
@@ -360,5 +385,126 @@ public class Match_F extends Fragment implements IXListViewListener,
 		default:
 			break;
 		}
+	}
+
+	private class getRecommendData extends AsyncTask<String, Integer, String> {
+		@Override
+		protected String doInBackground(String... params) {
+			String URL = params[0];
+			return new GetJsonData().getJSONArrayDataHGET(URL).toString();
+		}
+
+		@Override
+		protected void onPostExecute(String result) {
+			if (!result.equals("")) {
+				Gson gson = new Gson();
+				recommends = new ArrayList<RecommendMatchBean>();
+				recommends = gson.fromJson(result,
+						new TypeToken<List<RecommendMatchBean>>() {
+						}.getType());
+				adapterA = new RecommendsAdapter(getActivity(), recommends,
+						R.layout.match_item);
+				myLv.setAdapter(adapterA);
+				if (dialog != null && dialog.isShowing()) {
+					dialog.dismiss();
+					dialog = null;
+				}
+				myLv.setOnItemClickListener(new OnItemClickListener() {
+					@Override
+					public void onItemClick(AdapterView<?> parent, View view,
+							int position, long id) {
+
+						Intent intent = new Intent(getActivity(),
+								Match_ShowBigdata_A.class);
+						intent.putExtra("match_id",
+								recommends.get(position - 2).match_id);
+						getActivity().startActivity(intent);
+					}
+				});
+			}
+		}
+	}
+
+	class RecommendsAdapter extends CommonAdapter<RecommendMatchBean> {
+
+		public RecommendsAdapter(Context context,
+				List<RecommendMatchBean> datas, int layoutId) {
+			super(context, datas, layoutId);
+		}
+
+		@Override
+		public void convert(ViewHolder holder, RecommendMatchBean t) {
+			ImageView teamlogo1 = holder.getView(R.id.iv_teamlogo1);
+			ImageView teamlogo2 = holder.getView(R.id.iv_teamlogo2);
+			TextView tv_zhu, tv_ke;
+			ImageView iv_zhu, iv_ke;
+
+			if (t.result_type > 0) {
+				holder.getView(R.id.iv_mingzhong).setVisibility(View.VISIBLE);
+			} else {
+				holder.getView(R.id.iv_mingzhong).setVisibility(View.INVISIBLE);
+			}
+			if (!t.team1.logo_url.equals("")) {
+				ImageLoader.getInstance().displayImage(t.team1.logo_url,
+						teamlogo1);// 使用ImageLoader对图片进行加装！
+			} else {
+				teamlogo1.setImageResource(R.drawable.icon_empty);
+			}
+			if (!t.team2.logo_url.equals("")) {
+				ImageLoader.getInstance().displayImage(t.team2.logo_url,
+						teamlogo2);// 使用ImageLoader对图片进行加装！
+			} else {
+				teamlogo2.setImageResource(R.drawable.icon_empty);
+			}
+
+			if (!(null == t.half_home_score)) {
+				holder.getView(R.id.tv_half).setVisibility(View.VISIBLE);
+				holder.setText(R.id.tv_half, t.half_home_score + ":"
+						+ t.half_guest_score);
+			} else {
+				holder.getView(R.id.tv_half).setVisibility(View.INVISIBLE);
+			}
+			holder.setText(R.id.tv_time,
+					t.match_time.substring(t.match_time.indexOf(" ")));
+			holder.setText(R.id.tv_begin, t.begin);
+			holder.setText(R.id.tv_group, t.league_name);
+			holder.setText(R.id.tv_status, t.status);
+			holder.setText(R.id.tv_teamname1, t.team1.cn_name);
+			holder.setText(R.id.tv_teamname2, t.team2.cn_name);
+			if (t.match_describe.equals("未开")) {
+				holder.setText(R.id.tv_dot, "未开");
+				holder.getView(R.id.tv_score1).setVisibility(View.INVISIBLE);
+				holder.getView(R.id.tv_score2).setVisibility(View.INVISIBLE);
+			} else {
+				holder.getView(R.id.tv_score1).setVisibility(View.VISIBLE);
+				holder.getView(R.id.tv_score2).setVisibility(View.VISIBLE);
+				holder.setText(R.id.tv_dot, ":");
+				holder.setText(R.id.tv_score1, t.current_match.home_score);
+				holder.setText(R.id.tv_score2, t.current_match.guest_score);
+			}
+
+			if (t.home_score > t.guest_score) {
+				iv_zhu = holder.getView(R.id.iv_zhu);
+				iv_zhu.setImageResource(R.drawable.y2);
+				tv_zhu = holder.getView(R.id.tv_zhu);
+				tv_zhu.setTextColor(getResources().getColor(R.color.yuce));
+				iv_ke = holder.getView(R.id.iv_ke);
+				iv_ke.setImageResource(R.drawable.y3);
+				tv_ke = holder.getView(R.id.tv_ke);
+				tv_ke.setTextColor(getResources().getColor(R.color.grey));
+			} else if (t.home_score < t.guest_score) {
+
+				iv_ke = holder.getView(R.id.iv_ke);
+				iv_ke.setImageResource(R.drawable.y2);
+				tv_ke = holder.getView(R.id.tv_ke);
+				tv_ke.setTextColor(getResources().getColor(R.color.yuce));
+
+				iv_zhu = holder.getView(R.id.iv_zhu);
+				iv_zhu.setImageResource(R.drawable.y3);
+				tv_zhu = holder.getView(R.id.tv_zhu);
+				tv_zhu.setTextColor(getResources().getColor(R.color.gray));
+			}
+		}
+
 	}
 }

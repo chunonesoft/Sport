@@ -34,6 +34,7 @@ import com.chunsoft.view.xListview.XListView;
 import com.chunsoft.view.xListview.XListView.IXListViewListener;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
+import com.umeng.analytics.MobclickAgent;
 
 public class RecommendResult_FA extends FragmentActivity implements
 		IXListViewListener {
@@ -69,6 +70,7 @@ public class RecommendResult_FA extends FragmentActivity implements
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.result_statistic);
+		MobclickAgent.openActivityDurationTrack(false);
 		Manager mam = Manager.getInstance();
 		mam.pushOneActivity(RecommendResult_FA.this);
 		ButterKnife.bind(this);
@@ -161,7 +163,7 @@ public class RecommendResult_FA extends FragmentActivity implements
 		}
 		Calendar rightNow = Calendar.getInstance();
 		rightNow.setTime(dt);
-		rightNow.add(Calendar.DAY_OF_YEAR, -5);// 日期-7
+		rightNow.add(Calendar.MONTH, -1);// 月份-1
 		Date dt1 = rightNow.getTime();
 		String start_time = sdf.format(dt1);
 		// String url = Constant.MATCH_RECOMMENDS
@@ -329,5 +331,19 @@ public class RecommendResult_FA extends FragmentActivity implements
 				break;
 			}
 		}
+	}
+
+	@Override
+	public void onPause() {
+		super.onPause();
+		MobclickAgent.onPageEnd("Recommend Result page");
+		MobclickAgent.onPause(this);
+	}
+
+	@Override
+	public void onResume() {
+		super.onResume();
+		MobclickAgent.onPageStart("Recommend Result page");
+		MobclickAgent.onResume(this);
 	}
 }

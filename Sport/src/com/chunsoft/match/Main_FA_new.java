@@ -25,28 +25,36 @@ import com.chunsoft.sport.R;
 import com.chunsoft.utils.IntentUti;
 import com.chunsoft.utils.Manager;
 import com.chunsoft.utils.PreferencesUtils;
+import com.chunsoft.utils.UpdateManager;
+import com.umeng.analytics.MobclickAgent;
 
 public class Main_FA_new extends FragmentActivity implements OnClickListener {
 	/** widget statement */
-	private ImageView[] btn_menu = new ImageView[2];
+	private ImageView[] btn_menu = new ImageView[3];
 	NotificationManager mNotificationManager;
 	/** resources statement */
-	int menu_id[] = { R.id.iv_menu_0, R.id.iv_menu_2 };
-	int selectOn[] = { R.drawable.guide_home_on, R.drawable.guide_account_on };
+	int menu_id[] = { R.id.iv_menu_0, R.id.iv_menu_1, R.id.iv_menu_2 };
+	int selectOn[] = { R.drawable.guide_home_on, R.drawable.guide_tfaccount_on,
+			R.drawable.guide_account_on };
 	int selectOff[] = { R.drawable.bt_menu_0_select,
-			R.drawable.bt_menu_2_select };
+			R.drawable.bt_menu_1_select, R.drawable.bt_menu_2_select };
 	protected AlarmManager alarmManager;
 	/** Match Fragment */
 	// private Match_F match_F;
 	private Match_F match_F;
 	/** My Fragment */
 	private My_F my_F;
+	/** Help Fragment */
+	private Help_F help_F;
 	private Context mContext;
 
 	@Override
 	protected void onCreate(Bundle arg0) {
 		super.onCreate(arg0);
 		setContentView(R.layout.main_new);
+		// SDK在统计Fragment时，需要关闭Activity自带的页面统计，
+		// 然后在每个页面中重新集成页面统计的代码(包括调用了 onResume 和 onPause 的Activity)。
+		MobclickAgent.openActivityDurationTrack(false);
 		Manager mam = Manager.getInstance();
 		mam.pushOneActivity(Main_FA_new.this);
 		initView();
@@ -63,6 +71,7 @@ public class Main_FA_new extends FragmentActivity implements OnClickListener {
 
 	private void initView() {
 		mContext = Main_FA_new.this;
+		UpdateManager manager = new UpdateManager(mContext);
 		for (int i = 0; i < btn_menu.length; i++) {
 			btn_menu[i] = (ImageView) findViewById(menu_id[i]);
 			btn_menu[i].setOnClickListener(this);
@@ -95,6 +104,19 @@ public class Main_FA_new extends FragmentActivity implements OnClickListener {
 			} else {
 				if (match_F.isHidden()) {
 					showFragment(match_F);
+				}
+			}
+			break;
+		case R.id.iv_menu_1:
+			if (help_F == null) {
+				// match_F = new Match_F();
+				help_F = new Help_F();
+				if (!help_F.isHidden())
+					addFragment(help_F);
+				showFragment(help_F);
+			} else {
+				if (help_F.isHidden()) {
+					showFragment(help_F);
 				}
 			}
 			break;
@@ -151,6 +173,9 @@ public class Main_FA_new extends FragmentActivity implements OnClickListener {
 				.beginTransaction();
 		if (match_F != null) {
 			ft.hide(match_F);
+		}
+		if (help_F != null) {
+			ft.hide(help_F);
 		}
 		if (my_F != null) {
 			ft.hide(my_F);
@@ -218,6 +243,31 @@ public class Main_FA_new extends FragmentActivity implements OnClickListener {
 								Manager mam = Manager.getInstance();
 								mam.finishAllActivity();
 							}
-						}).setNegativeButton(R.id.button_cancel, null).show();
+						})
+				.setNegativeButton(R.id.button_cancel,
+						new DialogInterface.OnClickListener() {
+
+							@Override
+							public void onClick(DialogInterface dialog,
+									int which) {
+								mNotificationManager.cancelAll();
+								Intent intent = new Intent(Intent.ACTION_MAIN);
+								intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+								intent.addCategory(Intent.CATEGORY_HOME);
+								startActivity(intent);
+							}
+						}).show();
+	}
+
+	@Override
+	protected void onResume() {
+		super.onResume();
+		MobclickAgent.onResume(this);
+	}
+
+	@Override
+	protected void onPause() {
+		super.onPause();
+		MobclickAgent.onPause(this);
 	}
 }

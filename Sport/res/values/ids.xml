@@ -3,5 +3,5 @@
     <item name="exit_app" type="id">退出系统</item>
     <item name="question_exit" type="id">您确认要退出吗？</item>
     <item name="button_yes" type="id">确定</item>
-    <item name="button_cancel" type="id">取消</item>
+    <item name="button_cancel" type="id">继续接收信息</item>
 </resources>

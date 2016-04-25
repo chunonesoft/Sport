@@ -112,6 +112,7 @@ public class MatchRecommentNotifyService extends IntentService {
 		mConnectivityManager = (ConnectivityManager) this
 				.getSystemService(Context.CONNECTIVITY_SERVICE);
 		String URL = Constant.MATCH_RECOMMENDS + "?data_time=" + data_time;
+		Log.e("URL---ssssssssssss>", URL);
 		returnData = new JSONArray();
 		if (NetworkUtil.isNetWorkAvailable(mConnectivityManager)) {
 			returnData = new GetJsonData().getJSONArrayDataHGET(URL);

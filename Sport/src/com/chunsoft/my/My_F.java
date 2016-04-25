@@ -17,6 +17,7 @@ import com.chunsoft.utils.IntentUti;
 import com.chunsoft.utils.PreferencesUtils;
 import com.chunsoft.utils.ToastUtil;
 import com.chunsoft.utils.UpdateManager;
+import com.umeng.analytics.MobclickAgent;
 
 public class My_F extends Fragment implements OnClickListener {
 	@Bind(R.id.ll_exit)
@@ -40,6 +41,7 @@ public class My_F extends Fragment implements OnClickListener {
 		View view = LayoutInflater.from(getActivity()).inflate(R.layout.myf,
 				null);
 		ButterKnife.bind(this, view);
+		MobclickAgent.openActivityDurationTrack(false);
 		tv_title.setText(R.string.my);
 		Click();
 		return view;
@@ -79,5 +81,17 @@ public class My_F extends Fragment implements OnClickListener {
 		default:
 			break;
 		}
+	}
+
+	@Override
+	public void onPause() {
+		super.onPause();
+		MobclickAgent.onPageEnd("My page");
+	}
+
+	@Override
+	public void onResume() {
+		super.onResume();
+		MobclickAgent.onPageStart("My page");
 	}
 }

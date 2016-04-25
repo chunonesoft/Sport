@@ -29,6 +29,7 @@ import com.chunsoft.sport.R;
 import com.chunsoft.view.xListview.XListView;
 import com.chunsoft.view.xListview.XListView.IXListViewListener;
 import com.nostra13.universalimageloader.core.ImageLoader;
+import com.umeng.analytics.MobclickAgent;
 
 public class DataInfo_FA extends FragmentActivity implements IXListViewListener {
 	@Bind(R.id.tv_title)
@@ -45,6 +46,7 @@ public class DataInfo_FA extends FragmentActivity implements IXListViewListener 
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.data_info);
 		ButterKnife.bind(this);
+		MobclickAgent.openActivityDurationTrack(false);
 		init();
 		initData();
 
@@ -169,5 +171,19 @@ public class DataInfo_FA extends FragmentActivity implements IXListViewListener 
 		x_lv.stopLoadMore();
 		// 设置最后一次刷新时间
 		x_lv.setRefreshTime(getCurrentTime(System.currentTimeMillis()));
+	}
+
+	@Override
+	public void onPause() {
+		super.onPause();
+		MobclickAgent.onPageEnd("Data Info page");
+		MobclickAgent.onPause(this);
+	}
+
+	@Override
+	public void onResume() {
+		super.onResume();
+		MobclickAgent.onPageStart("Data Info page");
+		MobclickAgent.onResume(this);
 	}
 }
